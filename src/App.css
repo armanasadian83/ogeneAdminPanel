@@ -417,6 +417,8 @@ body.dark .form-group .rmdp-input::placeholder {color: #cbc4c4; opacity: 1;}
     backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); 
     border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; font-size: 24px;}
 
+.css-ubifyk{background: #2b3c5f !important;}
+
 
 
 
