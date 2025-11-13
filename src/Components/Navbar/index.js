@@ -111,7 +111,7 @@ const Navbar = () => {
                                     transition: { timeout: 600 },
                                 }} title='مشاهده وبسایت' arrow>
                                 <Button className="rounded-circle ms-4">
-                                        <a href='https:ogenetech.com' target="_blank"><IoMdGlobe /></a>
+                                        <a href='https://ogenetech.com' target="_blank"><IoMdGlobe /></a>
                                 </Button>
                             </Tooltip>
                             <Link to='/orders'>
