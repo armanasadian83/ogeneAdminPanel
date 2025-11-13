@@ -186,7 +186,7 @@ const AdminList = () => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div className="userBox">
+                                                    <div className="userBox inputFont">
                                                         {admin?.name}
                                                     </div>
                                                 </td>
@@ -222,7 +222,7 @@ const AdminList = () => {
                                                             </> : <div className="text-center w-100"><LuPenOff /></div>
                                                         }
                                                     </div>
-                                                </td>
+                                                </td> 
                                             </tr>            
                                         )
                                     })

@@ -75,16 +75,16 @@ const Sidebar = () => {
 
             <div className='d-flex align-items-center sideBarAccessBtns'>
                 <Link to='/orders'>
-                    <Button className="rounded-circle ms-2">
+                    <Button className="rounded-circle ms-2" onClick={() => context.closeNav()}>
                         <FaShopify />
                     </Button>
                 </Link>
-                <Link to='/userList'>
+                <Link to='/userList' onClick={() => context.closeNav()}>
                     <Button className="rounded-circle ms-2">
                         <ImUsers />
                     </Button>
                 </Link>
-                <Link to='https://t.me/Armi320'>
+                <Link to='https://t.me/Armi320' onClick={() => context.closeNav()}>
                     <Button className="rounded-circle ms-2">
                         <FcCustomerSupport />
                     </Button>
