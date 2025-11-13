@@ -1,0 +1,369 @@
+
+import { MdBrandingWatermark } from "react-icons/md";
+import { BiSolidCategoryAlt } from "react-icons/bi";
+import UserAvatarImgComponent from '../../Components/userAvatarImg';
+
+import Rating from '@mui/material/Rating';
+import Button from '@mui/material/Button';
+
+import { FaReply } from "react-icons/fa";
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation'
+ 
+import { MyContext } from "../../App";
+import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { AiFillCopyrightCircle } from "react-icons/ai";
+import { CiEdit } from "react-icons/ci";
+import { Tooltip } from "@mui/material";
+import Fade from '@mui/material/Fade';
+
+import {useParams } from "react-router-dom";
+import { deleteData, fetchDataFromApi } from "../../utils/api";
+import { CiSquareRemove } from "react-icons/ci";
+import { CgDanger } from "react-icons/cg";
+
+const ViewProduct = () => {
+
+    const context = useContext(MyContext);
+
+    useEffect(() => {
+        context.setIsHideSideBarAndHeader(false);
+    }, []);
+
+    //backend
+
+    const {id} = useParams();
+
+    const [productData, setProductData] = useState();
+    const [ReviewData, setReviewData] = useState();
+
+    useEffect(() => {
+      context.setProgress(30);
+        fetchDataFromApi(`/api/product/${id}`).then((res) => {
+            setProductData(res);
+        });
+
+        fetchDataFromApi(`/api/productReview?productId=${id}`).then((res) => {
+            setReviewData(res);
+        })
+        context.setProgress(100);
+    }, [id]);
+
+    const copyId = (id) => {
+        navigator.clipboard.writeText(id);
+        context.setAlertBox({
+            open: true,
+            error: false,
+            msg: "آیدی کپی شد!"
+        })
+    }
+
+    const calculateRating = () => {
+      let sum = 0;
+
+        if(ReviewData?.length > 0){
+            for(var i = 0 ; i < ReviewData?.length ; i++){
+                sum = Number(ReviewData[i]?.customerRating) + sum;
+            }
+          
+            const result = sum / ReviewData?.length;
+            return(result);
+        }
+        else{
+          return(5);
+        }
+    }
+
+    const removeComment = (deleteId) => {
+      context.setProgress(30);
+        deleteData(`/api/productReview/${deleteId}`).then((res) => {
+
+            fetchDataFromApi(`/api/productReview?productId=${id}`).then((res) => {
+                setReviewData(res);
+
+                context.setProgress(100);
+
+                context.setAlertBox({
+                    open: true,
+                    error: false,
+                    msg: "دیدگاه حذف شد!"
+                })
+                
+            });
+        })
+    }
+
+    return (
+        <>
+        
+        <div className="right-content w-100">
+            <div className="courseView">
+
+                <div className="card breadCrumb shadow border-0 mt-1">
+                    <div className="d-flex align-items-center py-2 px-4">
+                        <h4 className="mx-3">مشاهده محصول 
+                            <Tooltip slots={{
+                                  transition: Fade,
+                                }}
+                                slotProps={{
+                                  transition: { timeout: 300 },
+                                }} title='ویرایش' arrow>
+                                <Link to={`/products/edit/${id}`}>
+                                    <Button className="rounded-circle me-2">
+                                        <CiEdit />
+                                    </Button>
+                                </Link>
+                            </Tooltip>
+                        </h4>
+                        <div className="me-auto d-flex align-items-center d-none d-md-block">
+                            <span><Link to='/'>داشبورد</Link></span>
+                            <span>&nbsp; / &nbsp;</span>
+                            <span><Link to={`/products/${id}`}>{productData?.name}</Link></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className='card productDetailsSection p-3 my-4'>
+                  <div className='row'>
+                      <div className='col-lg-5'> 
+                          <div className='sliderWrapper pt-3 pb-3 pl-4 pr-4'>
+                            <h6 className='mb-4'>گالری محصول</h6>
+                            <Swiper 
+                              slidesPerView={1}
+                              spaceBetween={0}
+                              navigation={false} 
+                              loop={false}
+                              autoplay={{
+                                  delay: 5000,
+                                  disableOnInteraction: false,
+                              }}
+                              modules={[Navigation, Autoplay]}>
+                                  {
+                                    productData?.images?.length !== undefined && productData?.images?.length !== 0 && productData?.images?.map((img, index) => {
+                                        return(
+                                            <SwiperSlide>
+                                                <div className='item'>
+                                                    <img src={`${process.env.REACT_APP_BASE_URL}/uploads/${img}`} className='w-100' />
+                                                </div>
+                                            </SwiperSlide>
+                                        )
+                                    })
+                                  }
+                            </Swiper>
+                          </div>
+                      </div>
+                      
+                      <div className='col-lg-7'>
+                        <div className='pt-3 pb-3 pl-4 pr-4 details'>
+                          <h6 className='mb-4'>جزئیات محصول</h6>
+                          <h4>{productData?.name}</h4>
+
+                          <div className="p-5">
+                              <div className="row py-2">
+                                  <div className="col-5 col-md-3">حوزه :</div>
+                                  <div className="col-7 col-md-9">{productData?.field}</div>
+                              </div>
+
+                              <div className="row py-2">
+                                  <div className="col-5 col-md-3">نویسنده :</div>
+                                  <div className="col-7 col-md-9">{productData?.authorName !== '' ? productData?.authorName : <b>-</b>} </div>
+                              </div>
+
+                              <div className="row py-2">
+                                  <div className="col-5 col-md-3">انبار :</div>
+                                  <div className="col-7 col-md-9"><b>{productData?.countInStock}</b> &nbsp;
+                                    عدد
+                                  </div>
+                              </div>
+
+                              <div className="row py-2">
+                                  <div className="col-5 col-md-3">رخداد</div>
+                                  <div className="col-7 col-md-9">
+                                      <div className="d-flex align-items-center flex-wrap">
+                                        {
+                                          productData?.event?.length !== undefined && productData?.event?.length !== 0 ? productData?.event?.map((event, index) =>{
+                                              return(
+                                                <span key={index} className="badge badge-danger m-1">{event}</span>
+                                              ) 
+                                          }) : <b>-</b>
+                                        }
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <div className="row py-2">
+                                  <div className="col-5 col-md-3">قیمت :</div>
+                                  <div className="col-7 col-md-9">
+                                      <del className="mb-0">{productData?.oldPrice?.toLocaleString()}</del>
+                                      <p className="mb-0 newPrice">{productData?.price?.toLocaleString()}</p>
+                                  </div>
+                              </div>
+
+                              <div className="row py-2">
+                                  <div className="col-5 col-md-3">امتیاز :</div>
+                                  <div className="col-7 col-md-9">
+                                      <Rating style={{direction : 'ltr'}} value={calculateRating()} precision={0.5} readOnly />
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+
+                  <div className='p-4'>
+                    <h6 className='mt-2 mb-3'>درباره دوره</h6>
+                    <p style={{whiteSpace: 'pre-line'}}>
+                        {productData?.description}
+                    </p>
+                    <br />
+
+                    <hr />
+                    <br />
+                    <h6 className='mt-2 mb-3'>درباره نویسنده</h6>
+                    <p style={{whiteSpace: 'pre-line'}}>
+                        {productData?.authorDescription !== '' ? productData?.authorDescription : <span className="text-muted"><CgDanger />محتوای درباره نویسنده خالی است!</span>}
+                    </p>
+
+
+                    <br />
+
+                    <br />
+
+                    <h6 className='mt-2 mb-4'>نظرات کاربران</h6>
+
+                    <div className='reviewsSection'>
+
+                      {
+                        ReviewData?.length !== undefined && ReviewData?.length !== 0 ? ReviewData?.map((item, index) => {
+                            return(
+                                <div className='reviewsRow' key={index}>
+                                    <div className='row'>
+                                      <div className='col-sm-7 d-flex'>
+
+                                        <div className='d-flex flex-column'>                             
+                                          <div className='userInfo d-flex align-items-center mb-3'>
+                                              <div onClick={() => removeComment(item?.id)} className="removeComment"><CiSquareRemove /></div>
+
+                                            <div className='info pl-3'>
+                                              <h5>{item?.customerName}</h5>
+                                              <span className='iadd-time'>{item?.dateCreated}</span>
+                                            </div>
+
+                                          </div>
+
+                                          <Rating style={{direction : 'ltr'}} value={item?.customerRating} precision={0.5} readOnly />
+
+                                        </div>
+                                      </div>
+
+                                      <div className='col-md-5 d-flex align-items-center'>
+                                        <div className='ml-auto'>
+                                          {/*<Button className='btn-blue btn-big btn-lg ml-auto'><FaReply /> &nbsp; پاسخ </Button>*/}
+                                        </div>
+                                      </div>
+
+                                      <p className='mt-3'>
+                                          {item?.review}
+                                      </p>
+
+                                    </div>
+                                  </div>
+                            )
+                        }) : <span className="text-muted">هنوز کاربری برای این دوره دیدگاهی ثبت نکرده است!</span>
+                      }
+
+                      {/*<div className='reviewsRow reply'>
+                        <div className='row'>
+                          <div className='col-sm-7 d-flex'>
+
+                            <div className='d-flex flex-column'>                             
+                              <div className='userInfo d-flex align-items-center mb-3'>
+
+                                <div className='info pl-3'>
+                                  <h5>کارشناس پیشتبانی</h5>
+                                  <span className='iadd-time'>12:35 1404/02/04</span>
+                                </div>
+
+                              </div>
+
+                            </div>
+                          </div>
+
+                          <div className='col-md-5 d-flex align-items-center'>
+                            <div className='ml-auto'>
+                              <Button className='btn-blue btn-big btn-lg ml-auto'><FaReply /> &nbsp; پاسخ </Button>
+                            </div>
+                          </div>
+
+                          <p className='mt-3'>
+                              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+                          </p>
+
+                        </div>
+                      </div>*/}
+
+                    </div>
+
+                      {/*<div className='reviewsRow reply'>
+                        <div className='row'>
+                          <div className='col-sm-7 d-flex'>
+
+                            <div className='d-flex flex-column'>                             
+                              <div className='userInfo d-flex align-items-center mb-3'>
+
+                                <div className='info pl-3'>
+                                  <h5>کارشناس پیشتبانی</h5>
+                                  <span className='iadd-time'>12:35 1404/02/04</span>
+                                </div>
+
+                              </div>
+
+                            </div>
+                          </div>
+
+                          <div className='col-md-5 d-flex align-items-center'>
+                            <div className='ml-auto'>
+                              <Button className='btn-blue btn-big btn-lg ml-auto'><FaReply /> &nbsp; پاسخ </Button>
+                            </div>
+                          </div>
+
+                          <p className='mt-3'>
+                              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف
+                          </p>
+
+                        </div>
+                      </div>*/}
+
+
+                    <br />
+
+                    {/*<h6 className='mt-2 mb-4'>پاسخ دادن به</h6>
+
+                    <form className='reviewForm'>
+                      <textarea></textarea>
+
+                      <Button className='sendReply mt-3'>ارسال پاسخ</Button>
+                    </form>*/}
+
+                  </div>
+            </div>
+
+            <div className="text-center copyright mt-5 mb-3">
+                <a target="_blank" href="https://armanassadian.ir">
+                    <span>توسعه داده شده توسط تیم فیوژن</span> &nbsp;
+                </a>
+                <AiFillCopyrightCircle />
+            </div>
+
+        </div>
+    </div>
+
+        </>
+    );
+}
+ 
+export default ViewProduct;

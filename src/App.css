@@ -1,0 +1,540 @@
+@font-face{font-family: fugen-font; src: url("./../public/Fonts/B_Yekan/Yekan.ttf");}
+*{font-family: fugen-font;}
+button{font-family: fugen-font !important;}
+a{font-family: fugen-font !important;}
+li{font-family: fugen-font !important;}
+span{font-family: fugen-font !important;}
+input, textarea{font-family:'Times New Roman', Times, serif !important;}
+.inputFont{font-family:'Times New Roman', Times, serif !important;}
+
+
+
+html{overflow-x: hidden !important;}
+body{overflow-x: hidden !important; background: #ebe9e9;}
+body.dark{background: #071739;}
+
+.full{max-width: 100% !important; flex: 0 0 100% !important; width: 100% !important;}
+
+body.dark .text-muted{color: #dbd7d7 !important;}
+.aTag{text-decoration: none !important;}
+.aTag span{color: #000 !important;}
+
+.hideinPc{display: none !important;}
+.hideinPc-to-992{display: none !important;}
+
+::-webkit-scrollbar{width: 4px !important; height: 5px !important;}
+::-webkit-scrollbar-thumb{background: #27AA98 !important;}
+/*::-webkit-scrollbar-track{background: #b5d6cf !important;}*/
+::-webkit-scrollbar-thumb:hover{background: rgb(22, 124, 110) !important;}
+
+.topLoadingBar{height: 4px !important; background: #1866ee !important;}
+body.dark .topLoadingBar{background: #ff4964 !important;}
+
+.snackBar{left: auto !important; right: 24px !important;}
+.snackBar svg{margin-right: 20px !important;}
+
+header{width: 100%; height: 80px; background: rgba(255, 255, 255, 0.9); position: fixed; top: 0px; left: 0px; z-index: 1000;
+    -webkit-backdrop-filter: blur(1px); backdrop-filter: blur(1px);}
+header .logo{text-decoration: none;}
+header .logo img{width: 60px; margin-left: 10px; padding: 5px 0px;}
+header .logo span{color: #292929; font-weight: 800; font-size: 20px;}
+button.rounded-circle{min-width: 40px !important; width: 40px !important; height: 40px !important;
+    background: #f0f5ff !important; color: #0858f7 !important;}
+
+body.dark button.rounded-circle{background: #1c3161 !important;}
+body.dark button.rounded-circle svg{color: #fff !important;}
+body.dark button.rounded-circle:hover svg{color: #0858f7 !important;}
+body.dark header{background: #112143 !important;}
+body.dark header .logo span{color: #fff !important; opacity: 0.8}
+
+button.rounded-circle svg{color: #292929; font-size: 22px !important; transition: all 0.2s ease-in-out;}
+
+header button.rounded-circle:hover svg{color: #0858f7 !important;}
+.myAcc{text-align: left !important; color: #0858f7 !important; text-transform: capitalize !important;}
+.userImg{display: flex; align-items: center; justify-content: center; overflow: hidden; width: 40px;
+    height: 40px; border: 1px solid #0858f7; padding: 2px; border-radius: 100%;}
+.userImg .rounded-circle{display: flex; align-items: center; justify-content: center; overflow: hidden;
+    width: 100%; height: 100%; cursor: pointer; position: relative;}
+.userImg .rounded-circle img{object-fit: cover;  height: 100%;}
+
+.userImg.lg{width: 60px !important; height: 60px !important;}
+
+.myAcc .userInfo{padding-left: 10px;}
+.myAcc .userInfo h4{font-size: 14px; line-height: 15px; font-weight: 600; margin-bottom: 0px; color: #292929;}
+.myAcc .userInfo p{margin-top: 0px; font-size: 12px; color: #000; opacity: 0.7;}
+
+body.dark .myAcc .userInfo *{color: rgba(255, 255, 255, 0.8) !important;}
+body.dark .css-1toxriw-MuiList-root-MuiMenu-list{background-color: #12254e !important;}
+body.dark .MuiPaper-elevation li *{color: rgba(255, 255, 255, 0.8) !important;}
+body.dark .MuiPaper-elevation li{color: rgba(255, 255, 255, 0.8) !important;}
+body.dark .MuiPaper-elevation svg{color: rgba(255, 255, 255, 0.8) !important;}
+
+
+.main .sidebarWrapper{width: 20%; flex: 0 0 20%; transition: all 0.3s ease-in-out;}
+.main .sidebarWrapper.toggle{width: 0%; flex: 0 0 0%; display: none;}
+
+.main .sidebar button.rounded-circle{display: none;}
+.sidebar .sideBarAccessBtns{margin: 0px;}
+
+.main .sidebarWrapper .sidebar{width: 20%; height: 100vh; max-height: calc(100% - 76px); position: fixed; 
+    top: 76px; right: 0px; background: #fff; overflow-y: scroll; overflow-x: hidden; padding-bottom: 40px;
+    transition: all 0.3s;}
+
+/* drak/light theme */
+body.dark .main .sidebarWrapper .sidebar{background: #112143 !important;}
+/* drak/light theme */
+
+.main .sidebarWrapper .sidebar::-webkit-scrollbar-thumb{width: 3px !important;}
+.main .sidebarWrapper .sidebar::-webkit-scrollbar-thumb{background: transparent !important;}
+.main .sidebarWrapper:hover .sidebar::-webkit-scrollbar-thumb{background: #27AA98 !important;}
+
+.main .sidebarWrapper .sidebar ul{margin-bottom: 0px; padding: 10px 15px;}
+.main .sidebarWrapper .sidebar ul li{list-style: none; border-radius: 10px !important;}
+.main .sidebarWrapper .sidebar ul li button{color: #424040 !important; text-align: left; justify-content: left; 
+    padding: 12px 10px !important; align-items: center; text-transform: capitalize !important; 
+    font-weight: 600 !important; font-family: "Open Sans", sans-serif !important; font-size: 17px !important;}
+
+/* drak/light theme */
+body.dark .main .sidebarWrapper .sidebar ul li button,
+body.dark .main .sidebarWrapper .sidebar ul li button .icon svg{color: rgba(255, 255, 255, 0.8) !important;}
+/* drak/light theme */
+
+.main .sidebarWrapper .sidebar ul li button .icon{display: flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; margin-right: 10px; font-size: 38px;}
+
+/*.main .sidebarWrapper .sidebar ul li button *{color: #5e5d72 !important;}*/
+
+.main .sidebarWrapper .sidebar ul li button .icon svg{color: #424040}
+
+.main .sidebarWrapper .sidebar ul li button .arrow{margin-left: auto; display: flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; transition: all 0.3s ease-in-out; font-size: 20px;}
+
+.main .sidebarWrapper .sidebar ul li button:hover{background: #f1f1f1 !important;}
+
+/* drak/light theme */
+body.dark .main .sidebarWrapper .sidebar ul li button:hover, 
+body.dark .main .sidebarWrapper .sidebar ul li button.active{background: rgba(255, 255, 255, 0.1) !important;}
+body.dark .main .sidebarWrapper .sidebar ul li button.active .icon svg{/*color: #0858f7 !important;*/color: #4e78ca !important;}
+/* drak/light theme */
+
+.main .sidebarWrapper .sidebar ul li button.active{background: #f1f1f1 !important;}
+.main .sidebarWrapper .sidebar ul li button.active .icon svg{color: #26a998 !important;}
+.main .sidebarWrapper .sidebar ul li button.active .arrow.submenuArrow{transform: rotate(90deg);}
+
+.main .sidebarWrapper .sidebar ul .submenu{padding: 0px 45px; position: relative; transition: all 0.3s; height: 0px;}
+.main .sidebarWrapper .sidebar ul .submenu::before{content: ''; width: 1px; height: 110%;
+    position: absolute; top: -10px; right:25px; background: rgba(0, 0, 0, 0.2);}
+
+/* drak/light theme */
+body.dark .main .sidebarWrapper .sidebar ul .submenu::before{background: rgba(255, 255, 255, 0.2);}
+/* drak/light theme */
+
+.main .sidebarWrapper .sidebar ul.submenu li{width: 100%; list-style: none;}
+.main .sidebarWrapper .sidebar ul.submenu li a{color: #424040 !important; text-decoration: none;
+    display: block; padding: 6px 0px; font-size: 17px; font-weight: 500; transition: all 0.3s;}
+
+.main .sidebarWrapper a{text-decoration: none;}
+
+/* drak/light theme */
+body.dark .main .sidebarWrapper .sidebar ul .submenu li a{color: rgba(255, 255, 255, 0.7) !important;}
+body.dark .main .sidebarWrapper .sidebar ul .submenu li a:hover{/*color: #0858f7 !important;*/ color: #4e78ca !important;}
+/* drak/light theme */
+
+.main .sidebarWrapper .sidebar ul .submenu li a:hover{color: #0858f7 !important;}
+
+.main .sidebarWrapper .sidebar ul .submenuWrapper{transition: all 0.4s; height: 0px; overflow: hidden;}
+.main .sidebarWrapper .sidebar ul .submenuWrapper.colapsed .submenu{opacity: 0 !important;}
+
+.main .sidebarWrapper .sidebar ul .submenuWrapper.colapse{height: auto; overflow: inherit;
+    opacity: 1; padding: 10px 0px;}
+.main .sidebarWrapper .sidebar ul .submenuWrapper.colapse .submenu{opacity: 1; height: auto;}
+
+.logoutWrapper{padding: 0px 25px;}
+.logoutWrapper .logoutBox{width: 100%; height: 100px; padding: 65px; background: linear-gradient(#27aa9a, rgb(18, 122, 72));; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;}
+
+/* drak/light theme */
+body.dark .logoutWrapper .logoutBox{background: transparent; background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(75, 71, 71, 0.2));}
+/* drak/light theme */
+
+.logoutWrapper .logoutBox::before{content: ''; width: 80px; height: 80px; background: #ebe9e9;
+    border-radius: 100%; position: absolute; top: -40px; right: -5px;}
+.logoutWrapper .logoutBox::after{content: ''; width: 30px; height: 30px; background: #ebe9e9;
+        border-radius: 100%; position: absolute; top: 10px; left: 20px;}
+
+.logoutWrapper .logoutBox button{font-size: 13px !important; font-weight: 600 !important; background: #ebe9e9; color: #000;}
+.logoutWrapper .logoutBox button svg{margin-right: 10px; font-size: 20px !important;}
+
+
+.main .content{width: 80%; flex: 0 0 80%; transition: 0.3s ease-in-out;}
+.main .content.toggle{width: 100%; flex: 0 0 100%;}
+
+.right-content{padding: 100px 30px; padding-bottom: 10px; background: #ebe9e9; min-height: 100vh;}
+
+/* Login section starts from here */
+
+.loginSection{width: 100%; height: 100vh; padding: 35px 25px; background: #DBF4EE;}
+
+.loginPattern{width: 100%; height: 100%; opacity: 0.2; position: fixed; top: 0; z-index: 99; pointer-events: none;}
+
+.loginSection .loginBox{width: 400px; height: auto; margin: auto;}
+.loginSection .loginBox .logo h5{font-weight: 600;}
+.loginSection .loginBox .logo img{width: 150px; opacity: 1; z-index: 100; position: relative;}
+.loginSection .loginBox .logo img:hover{transform: scale(1.02);}
+.loginSection .loginBox .wrapper{width: 100%; height: auto; background: #fbf8f8; position: relative;
+    z-index: 100; padding: 35px !important; border-radius: 25px;}
+
+.loginSection .loginBox .wrapper .form-group{margin-bottom: 18px;}
+
+.loginSection .loginBox .wrapper .form-control{background: #fff; box-shadow: none !important;
+    outline: none !important; border-radius: 5px !important; font-size: 14px; font-weight: 600; height: 45px;
+    padding-right: 40px; border: 1px solid #26A999;}
+
+.loginSection .loginBox .wrapper .form-group.focus .icon svg{color: #26A999 !important;}
+
+.loginSection .loginBox .wrapper .form-control:focus{border: 2px solid #26A999;}
+.loginSection .loginBox .wrapper .form-group button{background: #c8ece4; color: #000; font-size: 16px; font-weight: 600;}
+
+.loginSection .loginBox .wrapper .form-group .icon{position: absolute; top: 3px;
+    right: 10px; z-index: 100; font-size: 23px;}
+
+.loginSection .loginBox .wrapper .form-group .icon svg{color: #5e5d72;}
+
+.loginSection .toggleShowPassword{position: absolute; top: 10px; left: 10px; cursor: pointer;}
+.addAdminSection .toggleShowPassword{position: relative; cursor: pointer;} 
+.toggleShowPassword svg{font-size: 22px; color: #5e5d72;}
+
+.loginSection .loginBox .wrapper .link{font-size: 16px; color: #000; text-decoration: none;}
+.loginSection .loginBox .wrapper .link:hover{color: #146057;}
+.loginSection .loginBox .wrapper p{font-size: 16px; color: #000; font-weight: 600;}
+
+
+.loginSection .loginBox .wrapper .or span.line{display: block; width: 35%; height: 1px;
+    background: rgba(0, 0, 0, 0.2);}
+
+.loginSection .loginBox .wrapper .or span.txt{display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 600; width: 40px; height: 40px; border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;}
+
+.loginSection button.rounded-circle{position: absolute; top: 30px; right: 30px;
+    min-width: 50px !important; width: 50px !important; height: 50px !important;
+    background: #f0f5ff !important; color: #0858f7 !important; font-size: 21px;}
+
+/* drak/light theme */
+body.dark .loginSection{background: #0b1e48;}
+body.dark .loginSection .loginBox .logo h5{color: #e9e5e5;}
+body.dark .loginSection .loginBox .wrapper{background: #071739;}
+body.dark .loginSection .loginBox .wrapper .form-control{background: #112143; border: 1px solid #e9e5e5; color: #e9e5e5;}
+body.dark .loginSection .loginBox .wrapper .form-control::placeholder{color: #cdcccc;}
+body.dark .loginSection .loginBox .wrapper .form-group.focus .icon svg{color: #fff !important;}
+body.dark .loginSection .loginBox .wrapper .form-control:focus{border: 2px solid #fff;}
+body.dark .loginSection .loginBox .wrapper p{color: #e9e5e5;}
+body.dark .loginSection .loginBox .wrapper .link{font-size: 16px; color: #e9e5e5; text-decoration: none;}
+body.dark .loginSection .loginBox .wrapper .link:hover{color: #c6bfbf;}
+body.dark .loginSection button.rounded-circle{background: #1c3161 !important;}
+body.dark .loginSection button.rounded-circle svg{color: #fff !important;}
+body.dark .loginSection button.rounded-circle:hover svg{color: #0858f7 !important;}
+/* drak/light theme */
+
+.card.breadCrumb h4{font-weight: bold; margin-top: 3px;}
+.card.breadCrumb a{color: #000; text-decoration: none;}
+
+.infoSection{padding: 20px; padding-right: 0px;}
+.infoSection .infoBox{width: 100%; height: 170px; border-radius: 10px; padding: 20px; margin: 10px; position: relative;}
+.infoSection .infoBox h4{font-size: 31px;}
+.infoSection .infoBox span{font-size: 53px; font-weight: bold;}
+
+.infoSection .infoBox .icon{position: absolute; top: 20px; left: 20px; display: flex; align-items: center; 
+    justify-content: center; width: 70px; height: 70px; border-radius: 10px; 
+    background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.3));}
+.infoSection .infoBox svg{font-size: 50px; opacity: 0.4; color: #fff;}
+
+.copyright a{color: #5e5d72; cursor: pointer; text-decoration: none;}
+
+body.dark .right-content{background: #071739;}
+
+.table .thead-dark th{background-color: #7dd3c8 !important; border-color: rgba(255, 255, 255, 0.1) !important;
+    font-size: 13px !important;}
+
+.table tbody td{font-size: 14px !important; color: #403e57; font-weight: 500;}
+
+.table tbody .actions button{min-width: 32px !important; width: 32px !important; height: 32px !important;
+    margin: 0px 3px !important;}
+.table tbody .actions button.secondary{background: rgba(203, 60, 231, 0.2);}
+.table tbody .actions button.success{background: rgba(26, 159, 83, 0.2);}
+.table tbody .actions button.error{background: rgba(241, 17, 51, 0.2);}
+.table tbody .actions button svg{font-size: 20px !important;}
+
+table.v-align td{vertical-align: middle !important; font-size: 16px !important;}
+
+.table td span.old, .table td span.new{display: block; width: 100%;}
+.table td span.new{font-weight: 600;}
+
+.table td .imgWrapper{width: 25%; flex: 0 0 25%; margin-left: 10px;}
+.table td .imgWrapper img{width: auto; height: 80px;}
+.table td .info{width: 75%; flex: 0 0 75%;}
+
+table td .info h6{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; font-weight: 600;
+    margin-bottom: 5px;}
+
+table td .info p{font-size: 13px; line-height: 18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    color: #5e5d72; margin-bottom: 0px;}
+
+table td .box p{overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 0px;}
+
+table.v-align td .productBox{width: 270px; color: #000; text-decoration: none;} 
+table.v-align td .userBox{width: 270px;} 
+table.v-align td .box{width: 150px;}
+table.v-align td .dateBox{width: 100px;}
+table.v-align td .capacityBox{width: 50px;}
+table.v-align td .eventBox{width: 180px;}
+table.v-align td .scrollBox{text-wrap: nowrap; width: 270px; overflow: scroll; padding: 15px 0px;}
+
+.badge{color: #000 !important; background: #7dd3c8;}
+body.dark .badge{color: #000 !important; background: #7dd3c8;}
+.badge.prerequisite{font-size: 14px; width: 100px; overflow-x: hidden; cursor: pointer;}
+.badge.prerequisiteBox{background: #7dd3c8; color: #000; border-radius: 15px; cursor: auto !important; font-size: 16px; overflow-x: hidden;
+    width: 120px; cursor: pointer;}
+body.dark  .badge.prerequisiteBox span{color: #000 !important;}
+.badge.prerequisiteBox button{padding: 0px !important; margin-top: 0px !important; width: 5px !important; border-radius: 50% !important;
+    background: #f5f3f3; width: 30px; height: 30px; min-width: 30px;}
+
+.tableFooter{padding: 15px 0px;}
+.tableFooter button{margin-right: auto; padding-left: 20px; padding-right: 20px; margin-left: 10px; background: #7dd3c8; color: #000;}
+.tableFooter p{font-size: 15px; font-weight: 500;}
+
+body.dark .card{background: #112143 !important;}
+body.dark .table .thead-dark th{background-color: #7dd3c8 !important; border-color: #dcd6d6 !important;}
+body.dark table.v-align td{background: #112143; border-color: #dcd6d6; color: #fff;}
+body.dark table td .info p{color: #c3bfbf;}
+body.dark .table tbody .actions button.secondary{background: rgb(222, 47, 255) !important; color: #fff !important;}
+body.dark .table tbody .actions button.success{background: rgb(39, 191, 104) !important; color: #fff !important;}
+body.dark .table tbody .actions button.error{background: rgb(255, 48, 79) !important; color: #fff !important;}
+body.dark h1,body.dark h2, body.dark h3, body.dark h4, body.dark h5, body.dark h6, 
+body.dark p, body.dark a{color: rgba(255, 255, 255, 0.8) !important;}
+body.dark span{color: rgba(255, 255, 255, 0.8);}
+
+.form .form-group{position: relative;}
+.form .form-group input, .form .form-group textarea{background: #fff; width: 100%; outline: none !important; 
+    border: 1px solid rgba(0, 0, 0, 0.2) !important; height: 60px; padding-left: 15px; border-radius: 5px;
+    font-size: 16px; padding-right: 15px;}
+.form .form-group textarea{height: 180px; padding-right: 15px; padding-left: 15px; padding: 10px;}
+.form .form-group textarea.headline{height: 300px;}
+body.dark .form .form-group input, body.dark .form .form-group textarea{background: #2b3c5f !important;
+    border: 1px solid #253557 !important; color: rgba(255, 255, 255, 0.8) !important;}
+.card.formCard button, .card.imageUploadCard button{padding-right: 100px; padding-left: 100px; background: #7dd3c8; color: #000; font-size: 17px;
+    margin-top: 30px}
+.card
+.form-group .eventEraser{cursor: pointer; background: #f5f3f3; width: 30px; height: 30px; min-width: 30px;
+    border-radius: 50% !important; transform: translateY(-2px);}
+.form-group .eventEraser svg{font-size: 24px; transform: translateX(-2px);}
+body.dark .form-group .eventEraser{background: #071739; color: #fff;}
+
+.imgUploadBox{width: 100%; flex-wrap: nowrap; gap: 10px;}
+.imgUploadBox .uploadBox{width: 150px; height: 160px; padding: 10px; border-radius: 10px;
+    border: 1px dashed rgba(0, 0, 0, 0.3); position: relative; display: flex; align-items: center;
+    justify-content: center; cursor: pointer !important; background: #fafafa; transition: all 0.3s;}
+.imgUploadBox .uploadBox:hover{background: #f1f1f1;}
+.imgUploadBox .uploadBox img{height: 100%;}
+.imgUploadBox .uploadBox input{position: absolute; width: 100%; height: 100%; opacity: 0; cursor: pointer;}
+
+.imgUploadBox .uploadBox .info{display: flex; align-items: center; justify-content: center;
+    flex-direction: column; pointer-events: none;}
+.imgUploadBox .uploadBox .info svg{font-size: 50px; opacity: 0.2;}
+.imgUploadBox .uploadBox .info h5{font-size: 15px; text-align: center; opacity: 0.5;}
+.imgUploadBox .uploadBox .box .lazy-load-image-background{height: 100% !important; width: 100% !important;}
+
+/* drak/light theme */
+body.dark .imgUploadBox .uploadBox{background: #2b3c5f;}
+body.dark .imgUploadBox .uploadBox:hover{background: #112143;}
+body.dark .imgUploadBox .uploadBox .info svg{font-size: 50px; opacity: 0.3; color: rgba(255, 255, 255, 0.7);}
+body.dark .imgUploadBox .uploadBox .info h5{font-size: 15px; text-align: center; opacity: 0.4;}
+body.dark .imgUploadBox .uploadBox{border: 1px dashed rgba(255, 255, 255, 0.3);}
+/* drak/light theme */
+
+.card.Table .widthHalf{width: 50%;}
+
+.courseView .productDetailsSection .item{display: flex !important; align-items: center; justify-content: center;}
+.courseView .productDetailsSection .item img{width: 400px !important; height: 400px;}
+.courseView .reviewsSection button{background: #7dd3c8; color: #000;}
+.courseView .sendReply{background: #7dd3c8; color: #000; width: 100%;}
+.courseView .details .newPrice{font-weight: 600; font-size: 20px;}
+.courseView h6{font-size: 22px; font-weight: 600;}
+
+.courseView button.rounded-circle{min-width: 30px !important; width: 30px !important; height: 30px !important;
+    background: #f0f5ff !important; color: #000 !important;}
+.courseView button.rounded-circle svg{transform: scale(1.7);}
+
+body.dark .courseView button.rounded-circle{background: #1c3161 !important;}
+body.dark .courseView button.rounded-circle svg{color: #fff !important;}
+body.dark .courseView button.rounded-circle:hover svg{color: #fff !important;}
+
+/*backend*/
+.disabled{opacity: 0.5; pointer-events: none !important; cursor: not-allowed !important;}
+.btnDisabled{opacity: 0.5; pointer-events: none !important;}
+
+.blurSideNav{opacity: 0.7 !important; pointer-events: none !important;} 
+.blurNavbar{pointer-events: none !important; opacity: 0.7 !important;}
+body.dark .blurSideNav{opacity: 0.4 !important;}
+
+.form-group .rmdp-container {direction: rtl; width: 100%;}
+.form-group .rmdp-input{height: 60px !important; width: 100%; font-size: 14px; 
+    background: transparent; padding-right: 60px !important; cursor: pointer;}
+.courseDatePicker .rmdp-wrapper {border-radius: 14px !important;box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
+    border: 1px solid #e5e7eb !important;overflow: hidden;}
+.courseDatePicker .rmdp-header{background: #fafafa; padding: 8px 10px; border-bottom: 1px solid #f0f0f0;}
+body.dark .courseDatePicker .rmdp-header{background: #1c3161;}
+.courseDatePicker .rmdp-header-values {font-weight: 500;}
+.rmdp-arrow-container {border-radius: 50%; padding: 4px; height: 17px !important;}
+body.dark .rmdp-arrow-container:hover {background: #000000 !important;}
+.rmdp-arrow-container:hover {background: #2c8cc4 !important;}
+.courseDatePicker .rmdp-week{background: #fcfcfc; padding: 6px 0; border-bottom: 1px solid #f6f6f6;}
+body.dark .courseDatePicker .rmdp-week{background: #1c3161; color: #fff;}
+body.dark .courseDatePicker .rmdp-week-day{color: #fff; font-weight: 500;}
+.courseDatePicker .rmdp-day span {border-radius: 10px !important;}
+body.dark .courseDatePicker .rmdp-day:hover span {background: #000 !important; color: #fff;}
+.courseDatePicker .rmdp-day.rmdp-today span{font-weight: bolder; background: #0858f7 !important; border: 0px !important;}
+.courseDatePicker .rmdp-selected span {background: #111827 !important; color: #fff !important;}
+.courseDatePicker .rmdp-disabled span {opacity: 0.45 !important;}
+.courseDatePicker .rmdp-time-picker {border-top: 1px solid #f0f0f0; padding-top: 10px;}
+.courseDatePicker .rmdp-time-picker div input{border: 1px solid #e5e7eb !important; border-radius: 10px; padding: 6px 8px;}
+.courseDatePicker .rmdp-container .rmdp-wrapper {z-index: 1000 !important;}
+body.dark .courseDatePicker.rmdp-wrapper{background: #071739 !important;}
+body.dark .courseDatePicker .rmdp-month-picker,body.dark .courseDatePicker .rmdp-year-picker{background: #1c3161 !important;}
+.rmdp-ep-arrow[direction=top]{border: 0px !important;}
+.rmdp-ep-arrow[direction=bottom]{border: 0px !important;}
+.dateIcon{position: absolute; top: 35px; font-size: 30px; right: 20px; cursor: pointer;}
+.form-group .rmdp-input::placeholder {color: #8d8a8a; opacity: 1;}
+body.dark .form-group .rmdp-input::placeholder {color: #cbc4c4; opacity: 1;}
+
+.addPrerequisite{position: absolute !important; top: 7px; left: 10px; padding-right: 5px !important; padding-left: 5px !important;}
+
+
+/*deployment*/
+
+.entireLoading{width: 100%; height: 100vh; background: rgba(255, 255, 255, 0.1); position: fixed; top: 0px; left: 0px; z-index: 10000;
+    display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); 
+    border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; font-size: 24px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.slick-slide{outline: none !important;}
+
+.sliderSml .slick-current .item{border: 1px dashed #112143 !important;}
+
+.sliderSml .slick-slide{padding-right: 10px;}
+.sliderSml .slick-slide .item{border-radius: 7px !important;}
+
+.sliderSml *, .sliderBig *{transition: all 0.2s !important;}
+.sliderBig .item{ border-radius: 7px; border: 2px dashed #ccc !important;}
+.sliderSml .item{border: 2px dashed #ccc !important; cursor: pointer;}
+
+/* drak/light theme */
+body.dark .ratingSection .ratingrow span{color: rgba(255, 255, 255, 0.9) !important;}
+body.dark .row{color: rgba(255, 255, 255, 0.9);} 
+/* drak/light theme */
+
+/*I added this part*/
+ .productInfo .row .col-sm-5 span{color: rgba(0, 0, 0, 0.8);}
+body.dark .tags li span{background: #1b2b4d !important;}
+/*I added this part*/
+
+ .productInfo .row{margin-bottom: 10px !important;}
+
+ .productInfo .icon{width: 28%; flex: 0 0 28%;}
+ .productInfo .icon svg{font-size: 22px;}
+ .productInfo .name{width: 72%; flex: 0 0 72%; font-weight: 600; font-size: 15px;
+    /*color: rgba(255, 255, 255, 0.8);*/}
+
+ .productInfo .row .col-sm-9{display: flex; align-items: center;}
+ .productInfo .row .col-sm-9 span{opacity: 0.8; font-size: 15px; padding-left: 20px;}
+
+.tags{margin-bottom: 0px !important;}
+.tags li span{display: flex; align-items: center; justify-content: center; background: #f0f0f0;
+    border-radius: 5px !important; font-size: 11px !important; padding: 5px 10px !important; font-weight: 600;}
+
+/* not useful code
+.tags li span:first-child{padding-left: 0px !important;}
+*/
+
+/* drak/light theme */
+body.dark .ratingSection .ratingrow .progress{background: #000 !important;}
+body.dark .reviewsSection .reviewsRow{color: rgba(255, 255, 255, 0.9) !important; background: #071739 !important;}
+/* drak/light theme */
+
+.ratingSection{width: 500px;}
+.ratingSection .ratingrow{width: 100%; margin-bottom: 15px !important;}
+.ratingSection .ratingrow .progress{height: 5px !important;}
+.ratingSection .ratingrow .progress .progress-bar{background: #edb213 !important;}
+.ratingSection .ratingrow .col1{width: 15%; flex: 0 0 15%; display: flex;}
+.ratingSection .ratingrow .col2{width: 50%; flex: 0 0 50%;}
+.ratingSection .ratingrow .col3{width: 25%; flex: 0 0 25%; display: flex; padding-left: 20px;}
+
+.reviewsSection{width: 100%; display: flex; flex-direction: column;}
+.reviewsSection .reviewsRow{width: 100%; height: auto; background: #f5f4f4; padding: 35px;
+    border-radius: 10px; margin: 15px 0px;}
+
+/*I added this part*/
+.iadd-time{color: #5e5d72 !important;}
+/*I added this part*/
+
+
+.userInfo h6{margin-bottom: 0px;}
+
+.reviewsSection .reviewsRow{position: relative;}
+.reviewsSection .reviewsRow p{padding-left: 20px;}
+.reviewsSection .reviewsRow.reply{width: 90%; margin-left: auto;}
+.reviewsSection .reviewsRow .removeComment{position: absolute; left: 20px; top: 20px;}
+.reviewsSection .reviewsRow .removeComment svg{font-size: 38px !important; cursor: pointer;}
+.reviewsSection .reviewsRow .removeComment:hover{color: red;}
+body.dark .reviewsSection .reviewsRow .removeComment:hover{color: rgb(197, 113, 113);}
+
+.reviewsSection .reviewsRow .btn-big{font-size: 15px !important;}
+.reviewsSection .reviewsRow .btn-big svg{font-size: 18px !important;}
+
+/* drak/light theme */
+body.dark .reviewForm textarea{background: #1b2b4d !important; color: rgba(255, 255, 255, 0.7); border: 1px solid #0d1a36;}
+/* drak/light theme */
+
+.reviewForm{width: 100%;}
+.reviewForm textarea{width: 100%; height: 200px; background: #f0f0f0; outline: none !important;
+    padding: 15px; border: 1px solid #e4e4e4; border-radius: 10px; color: #000;}
+
+/* useless 
+.reviewForm textarea::-webkit-input-placeholder{color: rgba(255, 255, 255, 0.5);}
+/* useless */

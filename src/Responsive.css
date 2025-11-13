@@ -1,0 +1,142 @@
+
+@media screen and (max-width : 575px){
+    .loginSection .loginBox{width: auto; padding-right: 20px; padding-left: 20px;}
+
+    .hideInMobile{display: none !important;}
+    header button.rounded-circle{margin-left: 0px !important; margin-right: 15px;}
+    
+    .main .sidebarWrapper .sidebar ul{padding: 0px 15px;}
+    header .part3{transform: translateX(-20px) !important;}
+
+    .imgUploadBox{flex-wrap: wrap;}
+    .imgUploadBox .uploadBox{width: 47% !important;}
+
+    .main .sidebarWrapper{width: 80% !important; height: 100vh !important; position: fixed;
+        top: 0px; right: -100%; z-index: 10000; opacity: 0; transition: all 0.3s ease-in-out;}
+
+    .sidebar button.rounded-circle{display: block !important;}
+    .sidebar .sideBarAccessBtns{margin: 12px;}
+
+    .badge.prerequisiteBox{font-size: 14px;}
+
+    .entireLoading{font-size: 17px;}
+}
+
+@media screen and (max-width : 600px){
+    .menuInMobile{margin-top: 8px !important;}
+    .menuItemInMobile{padding-right: 8px !important; padding-left: 8px !important; min-height: 12px !important;}
+    .menuItemInMobile div{min-width: 23px !important;}
+    .menuItemInMobile svg{font-size: 18px !important;}
+}
+
+@media screen and (max-width : 992px){
+
+    .hideinPc-to-992{display: block !important;}
+    .res-hide-to-992{display: none !important;}
+    header button.rounded-circle.account{color: #000 !important;}
+    body.dark header button.rounded-circle.account{color: #fff !important;}
+    header .part3{transform: translateX(-90px);}
+
+    .card.breadCrumb h4{margin-top: 6px;}
+
+    .widthHalf{width: 100% !important;}
+}
+
+
+@media screen and (max-width : 768px){
+    form .row .form-group{margin-top: 20px;}
+    form button{padding-right: 20px !important; padding-left: 20px !important;}
+
+    .imgUploadBox{flex-wrap: wrap;}
+    .imgUploadBox .uploadBox{width: 30%;}
+}
+
+@media screen and (min-width : 575px) and (max-width : 1121px){
+    .main .sidebarWrapper .sidebar ul{padding: 30px 15px;}
+}
+
+
+/* */
+@media only screen and (min-width: 320px) and (max-width: 1121px){
+
+    .res-hide{display: none !important;}
+    .res-col{flex-direction: column !important;}
+    .hideinPc{display: block !important;}
+    
+    
+    header{padding: 15px 0px; height: auto;}
+    header .part1, header .part3{padding: 0px !important;}
+    header .part1{max-width: 40% !important; flex: 0 0 40% !important;}
+    header .part1 img{width: 35px !important; transform: scale(1.7); margin-right: 20px;}
+    header .logo span{font-size: 18px; margin-right: 10px;}
+
+    header .part3{max-width: 60% !important; flex: 0 0 60% !important;;}
+
+    /* sidebar and main content */
+    .main .sidebarWrapper{width: 45%; height: 100vh !important; position: fixed;
+        top: 0px; right: -100%; z-index: 10000; opacity: 0; transition: all 0.3s ease-in-out;}
+
+    .main .sidebarWrapper .sidebar{width: 100% !important; position: relative !important;
+        top: 0px !important; max-height: inherit !important;}
+
+    .sidebarWrapper.open{right: 0px !important; opacity: 1 !important;}
+
+    .SidebarOverlay{position: fixed; top: 0px; left: 0px; background: rgba(0, 0, 0, 0.7); z-index: 1000;
+        width: 100%; height: 100% !important;}
+    .SidebarOverlay.show{display: block !important;}
+
+    .main .content{width: 100% !important; flex: 0 0 100% !important;}
+    .right-content{padding: 90px 15px !important;}
+
+    .dashboardBoxWrapper{white-space: nowrap !important; overflow-x: scroll; overflow-y: hidden;
+        display: block !important; margin-bottom: 20px !important;}
+    .dashboardBoxWrapper::-webkit-scrollbar{display: none !important;}
+    .dashboardBoxWrapper .dashboardBox{display: inline-block !important; width: 270px !important;
+        height: 160px !important; margin-right: 15px !important;}
+    
+    .topPart2{padding-left: 15px !important;}
+
+    .card.shadow.border-0.w-100.flex-row{margin-top: 0px !important;}
+    .card.shadow.border-0.p-3.mt-4{margin-top: 20px !important;}
+    .card{margin-top: 0px !important;}
+
+    /* added by me */
+    .productslistingBox{white-space: nowrap !important; overflow-x: scroll !important; overflow-y: hidden;
+        display: flex !important; justify-content: start !important;}
+    .productslistingBox::-webkit-scrollbar{display: none !important;}
+    .productsBoxWrapper .dashboardBox{display: inline-block !important; width: 270px !important;
+        height: 130px !important;}
+    .col{padding-left: 0px !important;}
+    /* added by me */
+
+    .breadcrumbs_.esp{margin-right: 90px !important; margin-top: 10px !important;}
+
+    /*product info page*/
+
+    .productInfo .col-sm-3{max-width: 200px !important; flex: 0 0 200px !important;}
+    .productInfo .col-sm-9{max-width: 100% !important; flex: 0 0 100% !important; padding-left: 36px !important;}
+
+    
+    /* login page */
+    .loginSection{padding: 25px 0px !important;}
+    .loginSection{height: auto !important;}
+    .signUpSection .col-md-8{display: none !important;}
+
+
+}
+
+@media only screen and (min-width: 320px) and (max-width: 575px){
+    header .row{margin: auto !important;}
+    button.rounded-circle{width: 45px !important; height: 45px !important; min-width: 45px !important; margin-right: 8px !important;}
+    header .btn-blue{font-size: 12px !important; padding: 5px 10px !important;}
+    .userImg{width: 35px; height: 35px;}
+
+    .myAccWrapper button{padding: 0px !important; min-width: 35px !important; width: 35px !important;}
+
+}
+
+@media only screen and (min-width: 320px) and (max-width: 767px){
+    /* product upload page */
+
+    .form .col{max-width: 100% !important; flex: 0 0 100% !important; padding: 0px 15px !important;}
+}
