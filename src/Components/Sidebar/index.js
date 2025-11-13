@@ -74,12 +74,16 @@ const Sidebar = () => {
         <div className="sidebar">
 
             <div className='d-flex align-items-center sideBarAccessBtns'>
-                <Button className="rounded-circle ms-2">
-                    <FaShopify />
-                </Button>
-                <Button className="rounded-circle ms-2">
-                    <ImUsers />
-                </Button>
+                <Link to='/orders'>
+                    <Button className="rounded-circle ms-2">
+                        <FaShopify />
+                    </Button>
+                </Link>
+                <Link to='/userList'>
+                    <Button className="rounded-circle ms-2">
+                        <ImUsers />
+                    </Button>
+                </Link>
                 <Link to='https://t.me/Armi320'>
                     <Button className="rounded-circle ms-2">
                         <FcCustomerSupport />
