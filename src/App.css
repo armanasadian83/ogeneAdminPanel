@@ -12,7 +12,7 @@ input, textarea{font-family:'Times New Roman', Times, serif !important;}
 html{overflow-x: hidden !important;}
 body{overflow-x: hidden !important; background: #ebe9e9;}
 body.dark{background: #071739;}
-
+   
 .full{max-width: 100% !important; flex: 0 0 100% !important; width: 100% !important;}
 
 body.dark .text-muted{color: #dbd7d7 !important;}
@@ -417,7 +417,7 @@ body.dark .form-group .rmdp-input::placeholder {color: #cbc4c4; opacity: 1;}
     backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); 
     border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 12px; font-size: 24px;}
 
-.css-ubifyk{background: #2b3c5f !important;}
+body.dark .css-ubifyk{background: #2b3c5f !important;}
 
 
 
