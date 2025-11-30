@@ -13,10 +13,11 @@ import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import { fetchDataFromApi, postData } from "../../utils/api";
+import { deleteData, fetchDataFromApi, postData } from "../../utils/api";
 
 import { BsCalendarDate } from "react-icons/bs";
 import { RiDeleteBin7Line } from "react-icons/ri";
+import { IoCloseSharp } from "react-icons/io5";
 
 const AddCourse = () => {
 
@@ -24,6 +25,7 @@ const AddCourse = () => {
 
     const [formFields, setFormFields] = useState({
         name : '',
+        images: [],
         description : '',
         headline: '',
         aboutTeacher: '',
@@ -255,7 +257,7 @@ const AddCourse = () => {
             prerequisite: [...prev.prerequisite, trimmed]
         }));
 
-        setValue("");
+        setValue(""); 
     };
 
     useEffect(() => {
@@ -265,71 +267,81 @@ const AddCourse = () => {
     const deletePrerequisite = (index) => {
         setFormFields(prev => ({
             ...prev,
-            prerequisite: prev.prerequisite.filter((_, i) => i !== index)
+            prerequisite: prev.prerequisite.filter((_, i) => i !== index)  
         }));
     };
 
     const formdata = new FormData();
-    const [files, setFiles] = useState([]);
-    const [imgFiles, setimgFiles] = useState();
-    const [previews, setPreviews] = useState();
-    
-    const [imgAssigned, setImgAssigned] = useState(false);
 
-    const onChangeFile = async(e, apiEndPoint) => {
+    /* img problem ---> */
+    const [uploading, setUploading] = useState(false);
+
+    const [uploadedImages, setUploadedImages] = useState([]);   // Cloudinary URLs
+
+    const onChangeFile = async (e, apiEndPoint) => {
         try {
-            const imgArr = [];
             const files = e.target.files;
-            //const fd = new formData();
-            for(var i = 0; i < files.length; i++){
-                if(files[i] && (files[i].type === 'image/jpeg' || files[i].type === 'image/jpg' || files[i].type === 'image/png' || files[i].type === 'image/webp' || files[i].type === 'image/png')){
-                    setimgFiles(e.target.files);
 
-                    const file = files[i];
-                    imgArr.push(file);
-                    formdata.append(`images`, file); 
-                }
-                else{
+            if (!files || files.length === 0) {
+                return;
+            }
+
+            // Show loading spinner
+            setUploading(true);
+
+            // Create a new FormData for THIS upload
+            const formdata = new FormData();
+
+            // Validate & append selected files
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
+                if (!validTypes.includes(file.type)) {
                     context.setAlertBox({
                         open: true,
                         error: true,
-                        msg: "فایل انتخابی باید در فرمت درست باشد!"
-                    })
+                        msg: "فرمت فایل معتبر نیست!"
+                    });
+
+                    setUploading(false);
                     return;
                 }
+
+                formdata.append("images", file);
             }
 
-            setFiles(imgArr);
-            //console.log(imgArr);
-            
-            postData(apiEndPoint, formdata).then((res) => {
-                //console.log(res);
-                setImgAssigned(true);
+            // Upload to backend → Cloudinary → returns URLs
+            const urls = await postData("/api/product/upload", formdata);
+
+            // urls will be something like:
+            // ["https://res.cloudinary.com/.../img1.jpg", "https://.../img2.jpg"]
+
+            if (urls && urls.length > 0) {
+                // Add uploaded URLs to state
+                setUploadedImages(prev => [...prev, ...urls]);
+            }
+
+            // Done
+            setUploading(false);
+
+            context.setAlertBox({
+                open: true,
+                error: false,
+                msg: "تصاویر با موفقیت آپلود شدند!"
+            });
+
+        } catch (error) {
+            console.log(error);
+            setUploading(false);
+            context.setAlertBox({
+                open: true,
+                error: true,
+                msg: "آپلود با خطا مواجه شد!"
             });
         }
-        catch (error) {
-            console.log(error);
-        }
-    }
-
-
-    useEffect(() => {
-        if(!imgFiles) return;
-        let tmp = [];
-        for(let i = 0; i<imgFiles.length; i++){
-            tmp.push(URL.createObjectURL(imgFiles[i]));
-        }
-
-        const objectUrls = tmp;
-        setPreviews(objectUrls);
-
-        //free memory
-        for(let i = 0 ; i < objectUrls.length ; i++){
-            return() => {
-                URL.revokeObjectURL(objectUrls[i])
-            }
-        }
-    }, [imgFiles])
+    };
 
     const [isLoading, setIsLoading] = useState(false);
     const [btnDisabled, setBtnDisabled] = useState(false);
@@ -417,7 +429,7 @@ const AddCourse = () => {
             return false;
         }
 
-        if(imgAssigned === false){
+        if(uploadedImages.length === 0){
             context.setAlertBox({
                 open: true,
                 error: true,
@@ -426,11 +438,25 @@ const AddCourse = () => {
             return false;
         }
 
+        if(uploading === true){
+            context.setAlertBox({
+                open: true,
+                error: true,
+                msg: "عکس در حال بارگذاری است!"
+            });
+            return false;
+        }
+
+        const courseData = {
+            ...formFields,
+            images: uploadedImages
+        };
+
         setBtnDisabled(true);
         setIsLoading(true);
 
         // submitting form in the database
-        postData('/api/course/create', formFields).then((res) => {
+        postData('/api/course/create', courseData).then((res) => {
             context.setAlertBox({
                 open: true,
                 error: false,
@@ -446,7 +472,11 @@ const AddCourse = () => {
                 setIsLoading(false);
             }, 500);
 
+            deleteData("/api/imageUpload/deleteAllImages");
+
             history('/courses');
+
+            setUploadedImages([]);
         })
         
     }
@@ -459,6 +489,34 @@ const AddCourse = () => {
             msg: "آیدی کپی شد!"
         })
     }
+
+    const FcRemoveImage = async (index, imgUrl) => {
+        try {
+            setUploadedImages(prev => prev.filter((url, i) => i !== index));
+
+            /* 3 — Extract public_id from Cloudinary URL
+            const parts = imgUrl.split("/");
+            const file = parts[parts.length - 1]; // "abc123.jpg"
+            const publicId = file.split(".")[0]; // "abc123"
+
+            // 4 — Request backend to delete from Cloudinary
+            await deleteData(`/api/product/delete-image/${publicId}`);
+
+            context.setAlertBox({
+                open: true,
+                error: false,
+                msg: "حذف شد!"
+            });*/
+
+        } catch (error) {
+            console.log(error);
+            context.setAlertBox({
+                open: true,
+                error: true,
+                msg: "خطا در حذف تصویر!"
+            });
+        }
+    };
 
     return (
         <>
@@ -837,22 +895,34 @@ const AddCourse = () => {
                         <h5 className='mb-4'>آپلود تصویر</h5>
                         <div className='imgUploadBox d-flex align-items-center'>
                             
-                            {
-                                previews?.length !== 0 && previews?.map((img, index) => {
-                                    return (
-                                        <div className='uploadBox' key={index}>
-                                            <img src={img} className='w-100' />
-                                        </div>
-                                    )
-                                })
+                            {uploadedImages?.length !== 0 &&
+                                uploadedImages.map((img, index) => (
+                                    <div className='uploadBox' key={index}>
+                                        <span className="remove" onClick={() => FcRemoveImage(index, img)}>
+                                            <IoCloseSharp />
+                                        </span>
+                                
+                                        <img src={img} className='w-100' />
+                                    </div>
+                                ))
                             }
 
                             <div className='uploadBox'>
-                                <input type='file' multiple onChange={(e) => onChangeFile(e, '/api/course/upload')} name='images' />
-                                <div className='info'>
-                                    <FaRegImages />
-                                    <h5 className="mt-1">آپلود تصویر</h5>
-                                </div>
+                                {
+                                    uploading === true ?
+                                    <div className="progressBar text-center d-flex align-items-center justify-content-center flex-column">
+                                        <CircularProgress />
+                                        <span>در حال بارگذاری</span>
+                                    </div>
+                                    :
+                                    <>
+                                    <input type='file' multiple onChange={(e) => onChangeFile(e, '/api/product/upload')} name='images' disabled={uploading} />
+                                    <div className='info'>
+                                        <FaRegImages />
+                                        <h5 className="mt-1">آپلود تصویر</h5>
+                                    </div>
+                                    </>
+                                }
                             </div>
                         </div>
     

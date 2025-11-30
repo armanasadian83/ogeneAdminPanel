@@ -421,6 +421,11 @@ body.dark .css-ubifyk{background: #2b3c5f !important;}
 
 
 
+.uploadBox .remove{position: absolute; right: 5px; top: 5px;}
+.uploadBox .remove svg{font-size: 26px; color: rgb(233, 97, 97);}
+
+
+
 
 
 

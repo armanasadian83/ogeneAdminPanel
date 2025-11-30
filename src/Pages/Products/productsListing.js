@@ -126,7 +126,7 @@ const Products = () => {
                                                 <Link to={`/products/${item?.id}`} className="d-flex align-items-center productBox">
                                                     <div className="imgWrapper">
                                                         <div className="img">
-                                                            <img className="w-100" src={`${process.env.REACT_APP_BASE_URL}/uploads/${item?.images[0]}`} />
+                                                            <img className="w-100" src={item?.images[0]} />
                                                         </div>
                                                     </div>
                                                     <div className="info pl-3">

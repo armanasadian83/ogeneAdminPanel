@@ -7,9 +7,10 @@ import { MyContext } from "../../App";
 import { useContext, useEffect, useState } from "react";
 import { FaCloudUploadAlt, FaRegImages } from "react-icons/fa";
 import { AiFillCopyrightCircle } from "react-icons/ai";
-import { editData, fetchDataFromApi, postData } from "../../utils/api";
+import { deleteData, editData, fetchDataFromApi, postData } from "../../utils/api";
 
 import { CiEraser } from "react-icons/ci";
+import { IoCloseSharp } from "react-icons/io5";
 
 const EditProduct = () => {
 
@@ -41,6 +42,7 @@ const EditProduct = () => {
 
     const [formFields, setFormFields] = useState({
             name : '',
+            images: [],
             description : '',
             price : null,
             oldPrice : null,
@@ -167,24 +169,14 @@ const EditProduct = () => {
       };
     }, [openEventSelect]);
 
-    //
-
-    // dividing 3 digits //
-    const [value, setValue] = useState('');
-
-    const handleChange = (e) => {
-        const rawValue = e.target.value.replace(/\D/g, '');
-        
-        const formattedValue = rawValue === '' ? '' : Number(rawValue).toLocaleString();
-        
-        setValue(formattedValue);
-    };
-
 
 
     //backend
     const [eventData, setEventdata] = useState([]);
     const {id} = useParams();
+
+    // img backend problems
+    const [uploadedImages, setUploadedImages] = useState([]);   // Cloudinary URLs
     
     useEffect(() => {
         context.setProgress(30);
@@ -211,7 +203,9 @@ const EditProduct = () => {
 
             setEventVal(res.event);
             setCategoryVal(res.field);
-            setPreviews(res.images);
+
+            // img backend problem
+            setUploadedImages(res.images);
         })
 
         context.setProgress(100);
@@ -225,67 +219,74 @@ const EditProduct = () => {
             }
         ))
     }
-
-    const [isSelectedImages, setIsSelectedImages] = useState(false);
     const formdata = new FormData();
-    const [files, setFiles] = useState([]);
-    const [imgFiles, setimgFiles] = useState();
-    const [previews, setPreviews] = useState();
 
-    const onChangeFile = async(e, apiEndPoint) => {
+    const [uploading, setUploading] = useState(false);
+
+    const onChangeFile = async (e, apiEndPoint) => {
         try {
-            const imgArr = [];
             const files = e.target.files;
-            //const fd = new formData();
-            for(var i = 0; i < files.length; i++){
-                if(files[i] && (files[i].type === 'image/jpeg' || files[i].type === 'image/jpg' || files[i].type === 'image/png' || files[i].type === 'image/png')){
-                    setimgFiles(e.target.files);
 
-                    const file = files[i];
-                    imgArr.push(file);
-                    formdata.append(`images`, file); 
-                }
-                else{
+            if (!files || files.length === 0) {
+                return;
+            }
+
+            // Show loading spinner
+            setUploading(true);
+
+            // Create a new FormData for THIS upload
+            const formdata = new FormData();
+
+            // Validate & append selected files
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
+                if (!validTypes.includes(file.type)) {
                     context.setAlertBox({
                         open: true,
                         error: true,
-                        msg: "یک عکس با فرمت مناسب انتخاب کنید!"
-                    })
+                        msg: "فرمت فایل معتبر نیست!"
+                    });
+
+                    setUploading(false);
                     return;
                 }
+
+                formdata.append("images", file);
             }
 
-            setFiles(imgArr);
-            //console.log(imgArr);
+            // Upload to backend → Cloudinary → returns URLs
+            const urls = await postData("/api/product/upload", formdata);
 
-            setIsSelectedImages(true);
-            
-            postData(apiEndPoint, formdata).then((res) => {
-                //console.log(res);
+            // urls will be something like:
+            // ["https://res.cloudinary.com/.../img1.jpg", "https://.../img2.jpg"]
+
+            if (urls && urls.length > 0) {
+                // Add uploaded URLs to state
+                setUploadedImages(prev => [...prev, ...urls]);
+            }
+
+            // Done
+            setUploading(false);
+
+            context.setAlertBox({
+                open: true,
+                error: false,
+                msg: "تصاویر با موفقیت آپلود شدند!"
+            });
+
+        } catch (error) {
+            console.log(error);
+            setUploading(false);
+            context.setAlertBox({
+                open: true,
+                error: true,
+                msg: "آپلود با خطا مواجه شد!"
             });
         }
-        catch (error) {
-            console.log(error);
-        }
-    }
-
-    useEffect(() => {
-        if(!imgFiles) return;
-        let tmp = [];
-        for(let i = 0; i<imgFiles.length; i++){
-            tmp.push(URL.createObjectURL(imgFiles[i]));
-        }
-
-        const objectUrls = tmp;
-        setPreviews(objectUrls);
-
-        //free memory
-        for(let i = 0 ; i < objectUrls.length ; i++){
-            return() => {
-                URL.revokeObjectURL(objectUrls[i])
-            }
-        }
-    }, [imgFiles])
+    };
 
     const [isLoading, setIsLoading] = useState(false);
     const history = useNavigate();
@@ -303,9 +304,6 @@ const EditProduct = () => {
             formdata.append('rating', formFields.rating);
             formdata.append('authorName', formFields.authorName);
             formdata.append('authorDescription', formFields.authorDescription);
-            if(isSelectedImages === false){
-                formdata.append('images', formFields.images);
-            }
     
     
             if(formFields.name === ""){
@@ -352,11 +350,37 @@ const EditProduct = () => {
                 });
                 return false;
             }
+
+            if(uploadedImages.length === 0){
+                context.setAlertBox({
+                    open: true,
+                    error: true,
+                    msg: "عکس محصول را بارگذاری کنید!"
+                });
+                return false;
+            }
+
+            if(uploading === true){
+                context.setAlertBox({
+                    open: true,
+                    error: true,
+                    msg: "عکس در حال بارگذاری است!"
+                });
+                return false;
+            }
+
+            const productData = {
+                ...formFields,
+                images: uploadedImages
+            };
     
             setIsLoading(true);
+
+
+
     
             // submitting form in the database
-            editData(`/api/product/${id}`, formFields).then((res) => {
+            editData(`/api/product/${id}`, productData).then((res) => {
                 context.setAlertBox({
                     open: true,
                     error: false,
@@ -377,8 +401,13 @@ const EditProduct = () => {
                     authorName: '',
                     authorDescription: ''
                 });
+
+
+                deleteData("/api/imageUpload/deleteAllImages");
     
                 history('/products');
+
+                setUploadedImages([]);
             })
         
         }
@@ -387,6 +416,25 @@ const EditProduct = () => {
             setEventVal([]);
             handleChangeEvent('');
         }
+
+        const FcRemoveImage = async (index, imgUrl) => {
+            try {
+                setUploadedImages(prev => prev.filter((url, i) => i !== index));
+    
+                // 3 — Extract public_id from Cloudinary URL
+                const parts = imgUrl.split("/");
+                const file = parts[parts.length - 1]; // "abc123.jpg"
+                const publicId = file.split(".")[0]; // "abc123"
+    
+            } catch (error) {
+                console.log(error);
+                context.setAlertBox({
+                    open: true,
+                    error: true,
+                    msg: "خطا در حذف تصویر!"
+                });
+            }
+        };
 
 
     return (
@@ -652,26 +700,33 @@ const EditProduct = () => {
                     <div className='imagesUploadSec'>
                         <h5 className='mb-4'>آپلود تصویر</h5>
                         <div className='imgUploadBox d-flex align-items-center'>
-                            {
-                                previews?.length !== 0 && previews?.map((img, index) => {
-                                    return (
-                                        <div className='uploadBox' key={index}>
-                                            {
-                                                isSelectedImages === true ?
-                                                <img src={`${img}`} className='w-100' />
-                                                :
-                                                <img src={`${process.env.REACT_APP_BASE_URL}/uploads/${img}`} className='w-100' />
-                                            }
-                                        </div>
-                                    )
-                                })
+                            {uploadedImages?.length !== 0 &&
+                                uploadedImages.map((img, index) => (
+                                    <div className='uploadBox' key={index}>
+                                        <span className="remove" onClick={() => FcRemoveImage(index, img)}>
+                                            <IoCloseSharp />
+                                        </span>
+                                
+                                        <img src={img} className='w-100' />
+                                    </div>
+                                ))
                             }
                             <div className='uploadBox'>
-                                <input type='file' multiple onChange={(e) => onChangeFile(e, '/api/product/upload')} name='images' />
-                                <div className='info'>
-                                    <FaRegImages />
-                                    <h5>تغییر تصویر</h5>
-                                </div>
+                                {
+                                    uploading === true ?
+                                    <div className="progressBar text-center d-flex align-items-center justify-content-center flex-column">
+                                        <CircularProgress />
+                                        <span>در حال بارگذاری</span>
+                                    </div>
+                                    :
+                                    <>
+                                    <input type='file' multiple onChange={(e) => onChangeFile(e, '/api/product/upload')} name='images' disabled={uploading} />
+                                    <div className='info'>
+                                        <FaRegImages />
+                                        <h5 className="mt-1">آپلود تصویر</h5>
+                                    </div>
+                                    </>
+                                }
                             </div>
                         </div>
     

@@ -67,6 +67,16 @@ const Login = () => {
         password: ""
     });
 
+    const onChangeInputEmail = (e) => {
+
+        const value = e.target.value.toLowerCase();
+
+        setFormFields(() => ({
+            ...formFields,
+            [e.target.name] : value
+        }));
+    }
+
     const onChangeInput = (e) => {
         setFormFields(() => ({
             ...formFields,
@@ -188,8 +198,8 @@ const Login = () => {
                     <form onSubmit={logIn}>
                         <div className={`form-group position-relative ${inputIndex === 0 && 'focus'}`}>
                             <span className="icon"><MdEmail /></span>
-                            <input type="text" name="email" onChange={onChangeInput} className="form-control" placeholder="ایمیل خود را وارد کنید" onFocus={() => focusInput(0)}
-                                onBlur={() => setInputIndex(null)} autoFocus lang="en" />
+                            <input type="text" name="email" onChange={onChangeInputEmail} className="form-control" placeholder="ایمیل خود را وارد کنید" onFocus={() => focusInput(0)}
+                                onBlur={() => setInputIndex(null)} autoFocus lang="en" value={formFields.email || ""}  />
                         </div>
 
                         <div className={`form-group position-relative ${inputIndex === 1 && 'focus'}`}>

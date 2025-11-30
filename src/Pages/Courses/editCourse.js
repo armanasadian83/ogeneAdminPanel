@@ -12,12 +12,13 @@ import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import { editData, fetchDataFromApi, postData } from "../../utils/api";
+import { deleteData, editData, fetchDataFromApi, postData } from "../../utils/api";
 import DateObject from "react-date-object";
 
 import { BsCalendarDate } from "react-icons/bs";
 import { CiEraser } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
+import { IoCloseSharp } from "react-icons/io5";
 
 
 const EditCourse = () => {
@@ -30,6 +31,7 @@ const EditCourse = () => {
 
     const [formFields, setFormFields] = useState({
         name : '',
+        images: [],
         description : '',
         headline: '',
         aboutTeacher: '',
@@ -286,7 +288,9 @@ const EditCourse = () => {
             setStatusVal(res.status);
             setStartingDpValue(parseJalali(res.startingDate));
             setEndingDpValue(parseJalali(res.EndingDate));
-            setPreviews(res.images);
+
+            // img backend problem
+            setUploadedImages(res.images);
 
             //setArray(res.prerequisite);
         })
@@ -329,67 +333,77 @@ const EditCourse = () => {
         setValue("");
     };
 
-
-    const [isSelectedImages, setIsSelectedImages] = useState(false);
     const formdata = new FormData();
-    const [files, setFiles] = useState([]);
-    const [imgFiles, setimgFiles] = useState();
-    const [previews, setPreviews] = useState();
 
-    const onChangeFile = async(e, apiEndPoint) => {
+    /* img problem ---> */
+    const [uploading, setUploading] = useState(false);
+    
+    const [uploadedImages, setUploadedImages] = useState([]);   // Cloudinary URLs
+
+    const onChangeFile = async (e, apiEndPoint) => {
         try {
-            const imgArr = [];
             const files = e.target.files;
-            //const fd = new formData();
-            for(var i = 0; i < files.length; i++){
-                if(files[i] && (files[i].type === 'image/jpeg' || files[i].type === 'image/jpg' || files[i].type === 'image/png' || files[i].type === 'image/png')){
-                    setimgFiles(e.target.files);
 
-                    const file = files[i];
-                    imgArr.push(file);
-                    formdata.append(`images`, file); 
-                }
-                else{
+            if (!files || files.length === 0) {
+                return;
+            }
+
+            // Show loading spinner
+            setUploading(true);
+
+            // Create a new FormData for THIS upload
+            const formdata = new FormData();
+
+            // Validate & append selected files
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
+                if (!validTypes.includes(file.type)) {
                     context.setAlertBox({
                         open: true,
                         error: true,
-                        msg: "یک عکس با فرمت مناسب انتخاب کنید!"
-                    })
+                        msg: "فرمت فایل معتبر نیست!"
+                    });
+
+                    setUploading(false);
                     return;
                 }
+
+                formdata.append("images", file);
             }
 
-            setFiles(imgArr);
-            //console.log(imgArr);
+            // Upload to backend → Cloudinary → returns URLs
+            const urls = await postData("/api/product/upload", formdata);
 
-            setIsSelectedImages(true);
-            
-            postData(apiEndPoint, formdata).then((res) => {
-                //console.log(res);
+            // urls will be something like:
+            // ["https://res.cloudinary.com/.../img1.jpg", "https://.../img2.jpg"]
+
+            if (urls && urls.length > 0) {
+                // Add uploaded URLs to state
+                setUploadedImages(prev => [...prev, ...urls]);
+            }
+
+            // Done
+            setUploading(false);
+
+            context.setAlertBox({
+                open: true,
+                error: false,
+                msg: "تصاویر با موفقیت آپلود شدند!"
+            });
+
+        } catch (error) {
+            console.log(error);
+            setUploading(false);
+            context.setAlertBox({
+                open: true,
+                error: true,
+                msg: "آپلود با خطا مواجه شد!"
             });
         }
-        catch (error) {
-            console.log(error);
-        }
-    }
-
-    useEffect(() => {
-        if(!imgFiles) return;
-        let tmp = [];
-        for(let i = 0; i<imgFiles.length; i++){
-            tmp.push(URL.createObjectURL(imgFiles[i]));
-        }
-
-        const objectUrls = tmp;
-        setPreviews(objectUrls);
-
-        //free memory
-        for(let i = 0 ; i < objectUrls.length ; i++){
-            return() => {
-                URL.revokeObjectURL(objectUrls[i])
-            }
-        }
-    }, [imgFiles])
+    };
 
     const [isLoading, setIsLoading] = useState(false);
     const history = useNavigate();
@@ -410,9 +424,6 @@ const EditCourse = () => {
         formdata.append('rating', formFields.rating);
         formdata.append('capacity', formFields.capacity);
         formdata.append('prerequisite', formFields.prerequisite);
-        if(isSelectedImages === false){
-            formdata.append('images', formFields.images);
-        }
 
 
         if(formFields.name === ""){
@@ -469,10 +480,33 @@ const EditCourse = () => {
             return false;
         }
 
+        if(uploadedImages.length === 0){
+            context.setAlertBox({
+                open: true,
+                error: true,
+                msg: "عکس دوره را بارگذاری کنید!"
+            });
+            return false;
+        }
+
+        if(uploading === true){
+            context.setAlertBox({
+                open: true,
+                error: true,
+                msg: "عکس در حال بارگذاری است!"
+            });
+            return false;
+        }
+
+        const courseData = {
+            ...formFields,
+            images: uploadedImages
+        };
+
         setIsLoading(true);
 
         // submitting form in the database
-        editData(`/api/course/${id}`, formFields).then((res) => {
+        editData(`/api/course/${id}`, courseData).then((res) => {
             context.setAlertBox({
                 open: true,
                 error: false,
@@ -496,7 +530,11 @@ const EditCourse = () => {
                 prerequisite: '',
             });
 
+            deleteData("/api/imageUpload/deleteAllImages");
+
             history('/courses');
+
+            setUploadedImages([]);
         })
             
     }
@@ -514,6 +552,34 @@ const EditCourse = () => {
             msg: "آیدی کپی شد!"
         })
     }
+
+    const FcRemoveImage = async (index, imgUrl) => {
+        try {
+            setUploadedImages(prev => prev.filter((url, i) => i !== index));
+
+            /* 3 — Extract public_id from Cloudinary URL
+            const parts = imgUrl.split("/");
+            const file = parts[parts.length - 1]; // "abc123.jpg"
+            const publicId = file.split(".")[0]; // "abc123"
+
+            // 4 — Request backend to delete from Cloudinary
+            await deleteData(`/api/product/delete-image/${publicId}`);
+
+            context.setAlertBox({
+                open: true,
+                error: false,
+                msg: "حذف شد!"
+            });*/
+
+        } catch (error) {
+            console.log(error);
+            context.setAlertBox({
+                open: true,
+                error: true,
+                msg: "خطا در حذف تصویر!"
+            });
+        }
+    };
 
 
     return (
@@ -897,27 +963,34 @@ const EditCourse = () => {
                         <h5 className='mb-4'>آپلود تصویر</h5>
                         <div className='imgUploadBox d-flex align-items-center'>
                             
-                            {
-                                previews?.length !== 0 && previews?.map((img, index) => {
-                                    return (
-                                        <div className='uploadBox' key={index}>
-                                            {
-                                                isSelectedImages === true ?
-                                                <img src={`${img}`} className='w-100' />
-                                                :
-                                                <img src={`${process.env.REACT_APP_BASE_URL}/uploads/${img}`} className='w-100' />
-                                            }
-                                        </div>
-                                    )
-                                })
+                            {uploadedImages?.length !== 0 &&
+                                uploadedImages.map((img, index) => (
+                                    <div className='uploadBox' key={index}>
+                                        <span className="remove" onClick={() => FcRemoveImage(index, img)}>
+                                            <IoCloseSharp />
+                                        </span>
+                                
+                                        <img src={img} className='w-100' />
+                                    </div>
+                                ))
                             }
 
                             <div className='uploadBox'>
-                                <input type='file' multiple onChange={(e) => onChangeFile(e, '/api/course/upload')} name='images' />
-                                <div className='info'>
-                                    <FaRegImages />
-                                    <h5>تغییر تصویر</h5>
-                                </div>
+                                {
+                                    uploading === true ?
+                                    <div className="progressBar text-center d-flex align-items-center justify-content-center flex-column">
+                                        <CircularProgress />
+                                        <span>در حال بارگذاری</span>
+                                    </div>
+                                    :
+                                    <>
+                                    <input type='file' multiple onChange={(e) => onChangeFile(e, '/api/product/upload')} name='images' disabled={uploading} />
+                                    <div className='info'>
+                                        <FaRegImages />
+                                        <h5 className="mt-1">آپلود تصویر</h5>
+                                    </div>
+                                    </>
+                                }
                             </div>
                         </div>
     

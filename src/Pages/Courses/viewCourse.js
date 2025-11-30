@@ -143,7 +143,7 @@ const ViewCourse = () => {
                                         return(
                                             <SwiperSlide>
                                                 <div className='item'>
-                                                    <img src={`${process.env.REACT_APP_BASE_URL}/uploads/${img}`} className='w-100' />
+                                                    <img src={img} className='w-100' />
                                                 </div>
                                             </SwiperSlide>
                                         )
