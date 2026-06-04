@@ -11,6 +11,7 @@ import { Button } from "@mui/material";
 import Rating from '@mui/material/Rating';
 import { AiFillCopyrightCircle } from "react-icons/ai";
 import { fetchDataFromApi } from "../../utils/api";
+import AlertBox from "../../Components/AlertBox";
 
 const Dashboard = () => {
 
@@ -40,6 +41,19 @@ const Dashboard = () => {
     }, []);
     //
 
+
+    // alert box
+    useEffect(() => {
+        // Check localStorage when component mounts
+        const isAlertDismissed = localStorage.getItem('alertDismissed');
+          
+        if (!isAlertDismissed) {
+          context.setIsAlertOpen(true);
+        } else {
+          context.setIsAlertOpen(false);
+        }
+    }, []);
+
     return (
         <>
         <div className="right-content w-100">
@@ -53,6 +67,11 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
+
+                {
+                    context.isAlertOpen && 
+                    <AlertBox />
+                }
 
                 <div className="infoSection">
                     <div className="row">
@@ -128,14 +147,16 @@ const Dashboard = () => {
                                                     <div className="d-flex align-items-center productBox">
                                                         <div className="imgWrapper">
                                                             <div className="img">
-                                                                <img className="w-100" src={`${process.env.REACT_APP_BASE_URL}/uploads/${item?.images[0]}`} />
+                                                                <img className="w-100" src={item?.images[0]} />
                                                             </div>
                                                         </div>
                                                         <div className="info pl-3">
-                                                            <h6>
-                                                                {item?.name}    
-                                                            </h6>
-                                                        </div>
+                                                            <Link to={`/courses/${item?.id}`} style={{textDecoration: 'none', color: 'black'}}>
+                                                                <h6>
+                                                                    {item?.name}  
+                                                                </h6>
+                                                            </Link>
+                                                        </div> 
                                                     </div>
                                                 </td>
                                                 <td>
@@ -230,13 +251,15 @@ const Dashboard = () => {
                                                     <div className="d-flex align-items-center productBox">
                                                         <div className="imgWrapper">
                                                             <div className="img">
-                                                                <img className="w-100" src={`${process.env.REACT_APP_BASE_URL}/uploads/${item?.images[0]}`} />
+                                                                <img className="w-100" src={item?.images[0]} />
                                                             </div>
                                                         </div>
                                                         <div className="info pl-3">
-                                                            <h6>
-                                                                {item?.name}  
-                                                            </h6>
+                                                            <Link to={`/products/${item?.id}`} style={{textDecoration: 'none', color: 'black'}}>
+                                                                <h6>
+                                                                    {item?.name}  
+                                                                </h6>
+                                                            </Link>
                                                             <p>{item?.description}</p>
                                                         </div>
                                                     </div>

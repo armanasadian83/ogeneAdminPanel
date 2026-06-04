@@ -129,7 +129,7 @@ const Navbar = () => {
                                     <FcCustomerSupport />
                                 </Button>
                             </Link>
-                        <Button className="rounded-circle account ms-4 hideinPc-to-992" onClick={handleOpenMyAccDrop}>KM</Button>
+                        <Button className="rounded-circle account ms-4 hideinPc-to-992" onClick={handleOpenMyAccDrop}>{context.user?.name?.slice(0, 2)}</Button>
 
 
                             <div className="myAccWrapper">

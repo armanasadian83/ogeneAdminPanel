@@ -492,22 +492,22 @@ const AddCourse = () => {
 
     const FcRemoveImage = async (index, imgUrl) => {
         try {
-            setUploadedImages(prev => prev.filter((url, i) => i !== index));
-
-            /* 3 — Extract public_id from Cloudinary URL
-            const parts = imgUrl.split("/");
-            const file = parts[parts.length - 1]; // "abc123.jpg"
-            const publicId = file.split(".")[0]; // "abc123"
-
-            // 4 — Request backend to delete from Cloudinary
-            await deleteData(`/api/product/delete-image/${publicId}`);
-
+            // استخراج fileKey از URL
+            const urlObj = new URL(imgUrl);
+            const fileKey = urlObj.pathname.substring(1); // "products/123456_image.jpg"
+            
+            // درخواست حذف به backend
+            await deleteData(`/api/product/delete-image/${encodeURIComponent(fileKey)}`);
+            
+            // حذف از state
+            setUploadedImages(prev => prev.filter((_, i) => i !== index));
+            
             context.setAlertBox({
                 open: true,
                 error: false,
-                msg: "حذف شد!"
-            });*/
-
+                msg: "تصویر با موفقیت حذف شد!"
+            });
+            
         } catch (error) {
             console.log(error);
             context.setAlertBox({

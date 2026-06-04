@@ -117,6 +117,10 @@ const App = () => {
 
     }, [isLogin]);
 
+
+    // alert box:
+    const [isAlertOpen, setIsAlertOpen] = useState(true);
+
     const values = {
         theme,
         setTheme,
@@ -138,7 +142,9 @@ const App = () => {
         user,
         setUser,
         isAdmin,
-        setIsAdmin
+        setIsAdmin,
+        isAlertOpen,
+        setIsAlertOpen
     }
 
     return (
@@ -180,6 +186,7 @@ const App = () => {
                             </div>
                         </>
                     }
+                    
 
                     <div className={`content ${isHideSideBarAndHeader === true && 'full'} ${isToggleSidebar === true ? 'toggle' : ''}`}>
                         <Routes>

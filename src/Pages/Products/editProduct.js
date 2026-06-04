@@ -231,13 +231,10 @@ const EditProduct = () => {
                 return;
             }
 
-            // Show loading spinner
             setUploading(true);
 
-            // Create a new FormData for THIS upload
             const formdata = new FormData();
 
-            // Validate & append selected files
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
 
@@ -257,18 +254,13 @@ const EditProduct = () => {
                 formdata.append("images", file);
             }
 
-            // Upload to backend → Cloudinary → returns URLs
+            // آپلود به backend (حالا ArvanCloud)
             const urls = await postData("/api/product/upload", formdata);
 
-            // urls will be something like:
-            // ["https://res.cloudinary.com/.../img1.jpg", "https://.../img2.jpg"]
-
             if (urls && urls.length > 0) {
-                // Add uploaded URLs to state
                 setUploadedImages(prev => [...prev, ...urls]);
             }
 
-            // Done
             setUploading(false);
 
             context.setAlertBox({
@@ -371,7 +363,7 @@ const EditProduct = () => {
 
             const productData = {
                 ...formFields,
-                images: uploadedImages
+                images: uploadedImages 
             };
     
             setIsLoading(true);
@@ -419,13 +411,22 @@ const EditProduct = () => {
 
         const FcRemoveImage = async (index, imgUrl) => {
             try {
-                setUploadedImages(prev => prev.filter((url, i) => i !== index));
-    
-                // 3 — Extract public_id from Cloudinary URL
-                const parts = imgUrl.split("/");
-                const file = parts[parts.length - 1]; // "abc123.jpg"
-                const publicId = file.split(".")[0]; // "abc123"
-    
+                // استخراج fileKey از URL ArvanCloud
+                const urlObj = new URL(imgUrl);
+                const fileKey = urlObj.pathname.substring(1); // "products/123456_image.jpg"
+                
+                // درخواست حذف به backend
+                await deleteData(`/api/product/delete-image/${encodeURIComponent(fileKey)}`);
+                
+                // حذف از state (UI)
+                setUploadedImages(prev => prev.filter((_, i) => i !== index));
+                
+                context.setAlertBox({
+                    open: true,
+                    error: false,
+                    msg: "تصویر با موفقیت حذف شد!"
+                });
+                
             } catch (error) {
                 console.log(error);
                 context.setAlertBox({

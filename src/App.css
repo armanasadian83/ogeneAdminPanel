@@ -424,6 +424,22 @@ body.dark .css-ubifyk{background: #2b3c5f !important;}
 .uploadBox .remove{position: absolute; right: 5px; top: 5px;}
 .uploadBox .remove svg{font-size: 26px; color: rgb(233, 97, 97);}
 
+/* alert box */
+.alertbox{position: relative; z-index: 9999; display: flex; justify-content: center;} 
+.alertbox h4{color: #6c6c6c;}
+.alertbox h4 svg{transform: translateY(-2px);}
+.alertbox .box{position: fixed; top: 80px; height: auto; background-color: #ffffff; width: 60%; color: #747373;
+    border-radius: 20px; padding: 40px; text-align: right;}
+.alertbox .box span{position: absolute; left: 15px; top: 15px; color: #000; cursor: pointer; font-size: 28px}
+.alertbox .box button{outline: none; background: rgb(224, 224, 224); border: none; border-radius: 10px; padding: 1px 15px;
+    color: #5a5a5a;}
+.alertbox .box button:hover{background: rgb(205, 204, 204)}
+
+body.dark .alertbox .box{background-color: #112143  !important;}
+body.dark .alertbox .box button{background: #1c3161; color: #d4d2d2;}
+body.dark .alertbox .box button:hover{background: #182a54; color: #d4d2d2;}
+body.dark .alertbox .box span{color: #fff;}
+
 
 
 

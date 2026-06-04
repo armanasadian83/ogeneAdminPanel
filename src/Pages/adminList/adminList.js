@@ -213,7 +213,7 @@ const AdminList = () => {
                                                 <td> 
                                                     <div className="actions d-flex align-items-center">
                                                         {
-                                                            admin?.id !== '690a6b9d37e779a0abd74979' ? 
+                                                            admin?.id !== '6a2162b6904b7bb74a0317c6' ?  
                                                             <>
                                                                 <Link to={`${btnDisabled !== true ? `/adminList/edit/${admin?.id}` : '/products'} `}>
                                                                     <Button className={`success ${btnDisabled !== false && 'btnDisabled'}`} color='success' ><FaPencilAlt /></Button>

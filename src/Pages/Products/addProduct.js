@@ -10,7 +10,7 @@ import { AiFillCopyrightCircle } from "react-icons/ai";
 import { deleteData, fetchDataFromApi, postData } from "../../utils/api";
 import { IoCloseSharp } from "react-icons/io5";
 
-const AddProduct = () => {
+const AddProduct = () => { 
 
     const context = useContext(MyContext);
     
@@ -380,7 +380,7 @@ const AddProduct = () => {
         })
     }
 
-    const FcRemoveImage = async (index, imgUrl) => {
+    /*const FcRemoveImage = async (index, imgUrl) => {
         try {
             setUploadedImages(prev => prev.filter((url, i) => i !== index));
 
@@ -396,8 +396,36 @@ const AddProduct = () => {
                 open: true,
                 error: false,
                 msg: "حذف شد!"
-            });*/
+            });*/ /*
 
+        } catch (error) {
+            console.log(error);
+            context.setAlertBox({
+                open: true,
+                error: true,
+                msg: "خطا در حذف تصویر!"
+            });
+        }
+    };*/
+
+    const FcRemoveImage = async (index, imgUrl) => {
+        try {
+            // استخراج fileKey از URL
+            const urlObj = new URL(imgUrl);
+            const fileKey = urlObj.pathname.substring(1); // "products/123456_image.jpg"
+            
+            // درخواست حذف به backend
+            await deleteData(`/api/product/delete-image/${encodeURIComponent(fileKey)}`);
+            
+            // حذف از state
+            setUploadedImages(prev => prev.filter((_, i) => i !== index));
+            
+            context.setAlertBox({
+                open: true,
+                error: false,
+                msg: "تصویر با موفقیت حذف شد!"
+            });
+            
         } catch (error) {
             console.log(error);
             context.setAlertBox({
