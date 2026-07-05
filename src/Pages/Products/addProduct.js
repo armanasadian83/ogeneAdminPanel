@@ -5,10 +5,15 @@ import { Button, Checkbox, CircularProgress, ListItemText, MenuItem, Select } fr
 
 import { MyContext } from "../../App";
 import { useContext, useEffect, useState } from "react";
-import { FaCloudUploadAlt, FaRegImages } from "react-icons/fa";
+import { FaCloudUploadAlt, FaRegEdit, FaRegImages } from "react-icons/fa";
 import { AiFillCopyrightCircle } from "react-icons/ai";
 import { deleteData, fetchDataFromApi, postData } from "../../utils/api";
 import { IoCloseSharp } from "react-icons/io5";
+
+// adding markdown
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { TbTemplate } from "react-icons/tb";
 
 const AddProduct = () => { 
 
@@ -16,7 +21,7 @@ const AddProduct = () => {
     
     /*const BootstrapInput = styled(InputBase)(({theme}) => ({
     'label + &': {
-        marginTop: theme.spacing(3),
+        marginTop: theme.spacing(3), 
     },
     '& .MuiInputBase-input': {
         borderRadius: 4,
@@ -170,6 +175,10 @@ const AddProduct = () => {
         
         setValue(formattedValue);
     };
+
+    // adding markdown
+    const [showPreview, setShowPreview] = useState(false);
+    const [showAuthorPreview, setShowAuthorPreview] = useState(false);
 
 
     //backend
@@ -437,6 +446,11 @@ const AddProduct = () => {
     };
 
 
+    const downloadGuide = (e) => {
+        e.preventDefault();
+        window.open('/markdownGuide.pdf', '_blank');
+    };
+
 
 
 
@@ -481,7 +495,50 @@ const AddProduct = () => {
                         <div className="col-12 col-md-9">
                             <div className='form-group'>
                                 <h6>درباره این محصول</h6>
-                                <textarea name="description" value={formFields.description} type='text' onChange={inputChange} cols={2} placeholder=""></textarea>
+                                {!showPreview ? (
+                                    <textarea 
+                                        name="description" 
+                                        value={formFields.description} 
+                                        type='text' 
+                                        onChange={inputChange} 
+                                        cols={2} 
+                                        placeholder=""
+                                        style={{ minHeight: '150px', width: '100%' }}
+                                    />
+                                ) : (
+                                    <div className="txtareaViewer">
+                                        <ReactMarkdown 
+                                            remarkPlugins={[remarkGfm]}
+                                            components={{
+                                                img: ({node, ...props}) => (
+                                                    <img 
+                                                        {...props} 
+                                                        style={{ 
+                                                            width: '100px', 
+                                                            height: '100px',
+                                                            objectFit: 'cover',
+                                                            borderRadius: '4px'
+                                                        }} 
+                                                    />
+                                                )
+                                            }}
+                                        >
+                                            {formFields.description || ''}
+                                        </ReactMarkdown>
+                                    </div>
+                                )}
+                                <div className="flex align-items-center">
+                                    <button 
+                                        className="changeTxtareaView mx-1"
+                                        type="button" 
+                                        onClick={() => setShowPreview(!showPreview)}
+                                    >
+                                    {showPreview ? <span><FaRegEdit />&nbsp;ویرایش محتوا</span> : <span><TbTemplate />&nbsp;پیش نمایش</span>}
+                                    </button>
+                                    <button className="markdownGuide changeTxtareaView mx-1"onClick={downloadGuide}>
+                                        دانلود راهنما   
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -688,7 +745,44 @@ const AddProduct = () => {
                         <div className="col-12 col-md-9">
                             <div className='form-group'>
                                 <h6>درباره نویسنده</h6>
-                                <textarea name="authorDescription" value={formFields.authorDescription} onChange={inputChange} cols={20}></textarea>
+                                {!showAuthorPreview ? (
+                                    <textarea 
+                                        name="authorDescription" 
+                                        value={formFields.authorDescription} 
+                                        onChange={inputChange} 
+                                        cols={20}
+                                        placeholder=""
+                                        style={{ minHeight: '150px', width: '100%' }}
+                                    />
+                                ) : (
+                                    <div className="txtareaViewer">
+                                        <ReactMarkdown 
+                                            remarkPlugins={[remarkGfm]}
+                                            components={{
+                                                img: ({node, ...props}) => (
+                                                    <img 
+                                                        {...props} 
+                                                        style={{ 
+                                                            width: '100px', 
+                                                            height: '100px',
+                                                            objectFit: 'cover',
+                                                            borderRadius: '4px'
+                                                        }} 
+                                                    />
+                                                )
+                                            }}
+                                        >
+                                            {formFields.authorDescription || ''}
+                                        </ReactMarkdown>
+                                    </div>
+                                )}
+                                <button 
+                                    className="changeTxtareaView mx-1"
+                                    type="button" 
+                                    onClick={() => setShowAuthorPreview(!showAuthorPreview)}
+                                >
+                                {showPreview ? <span><FaRegEdit />&nbsp;ویرایش محتوا</span> : <span><TbTemplate />&nbsp;پیش نمایش</span>}
+                                </button>
                             </div>
                         </div>
                     </div>

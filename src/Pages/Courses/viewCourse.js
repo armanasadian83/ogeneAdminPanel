@@ -26,6 +26,12 @@ import { deleteData, fetchDataFromApi } from "../../utils/api";
 import { CiSquareRemove } from "react-icons/ci";
 import { CgDanger } from "react-icons/cg";
 
+
+
+// adding markdown
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+
 const ViewCourse = () => {
 
     const context = useContext(MyContext);
@@ -214,7 +220,10 @@ const ViewCourse = () => {
                               <div className="row py-2">
                                   <div className="col-5 col-md-3">قیمت :</div>
                                   <div className="col-7 col-md-9">
-                                      <del className="mb-0">{courseData?.oldPrice?.toLocaleString()} تومان</del>
+                                      {
+                                        courseData?.oldPrice && courseData?.oldPrice !== '' && 
+                                        <del className="mb-0">{courseData?.oldPrice?.toLocaleString()} تومان</del>
+                                      }
                                       <p className="mb-0 newPrice">{courseData?.price?.toLocaleString()} تومان</p>
                                   </div>
                               </div>
@@ -232,15 +241,35 @@ const ViewCourse = () => {
 
                   <div className='p-4'>
                     <h6 className='mt-2 mb-3'>درباره دوره</h6>
-                    <p style={{whiteSpace: 'pre-line'}}>
+                    {/*<p style={{whiteSpace: 'pre-line'}}>
                       {courseData?.description}
-                    </p>
+                    </p>*/}
+                    <div style={{ whiteSpace: 'pre-line' }}>
+                        <ReactMarkdown 
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            img: ({node, ...props}) => (
+                              <img 
+                                {...props} 
+                                style={{ 
+                                  width: '100px', 
+                                  height: '100px',
+                                  objectFit: 'cover',
+                                  borderRadius: '4px'
+                                }} 
+                              />
+                            )
+                          }}
+                        >
+                          {courseData?.description || ''}
+                        </ReactMarkdown>
+                    </div>
 
 
                     <br />
 
                     <div className="row"> 
-                      <div className="col-12 col-lg-6">
+                      {/*<div className="col-12 col-lg-6">
                           <h6 className='mt-2 mb-3'>سرفصل دوره :</h6>
                           <p style={{whiteSpace: 'pre-line'}}>
                           {courseData?.headline !== '' ? courseData?.headline : <span className="text-muted"><CgDanger />محتوای سرفصل دوره خالی است!</span>}
@@ -252,8 +281,67 @@ const ViewCourse = () => {
                           <p style={{whiteSpace: 'pre-line'}}>
                             {courseData?.aboutTeacher !== '' ? courseData?.aboutTeacher : <span className="text-muted"><CgDanger />محتوای درباره مدرس خالی است!</span>}
                           </p>
+                      </div>*/}
+
+                      <div className="col-12 col-lg-6">
+                          <h6 className='mt-2 mb-3'>سرفصل دوره :</h6>
+                          {courseData?.headline ? (
+                              <div>
+                                  <ReactMarkdown 
+                                      remarkPlugins={[remarkGfm]}
+                                      components={{
+                                          img: ({node, ...props}) => (
+                                              <img 
+                                                  {...props} 
+                                                  style={{ 
+                                                      width: '100px', 
+                                                      height: '100px',
+                                                      objectFit: 'cover',
+                                                      borderRadius: '4px'
+                                                  }} 
+                                              />
+                                          )
+                                      }}
+                                  >
+                                      {courseData.headline}
+                                  </ReactMarkdown>
+                              </div>
+                          ) : (
+                              <span className="text-muted"><CgDanger />محتوای سرفصل دوره خالی است!</span>
+                          )}
                       </div>
+
+                      <div className="col-12 col-lg-6">
+                          <h6 className='mt-2 mb-3'>درباره مدرس:</h6>
+                          {courseData?.aboutTeacher ? (
+                              <div>
+                                  <ReactMarkdown 
+                                      remarkPlugins={[remarkGfm]}
+                                      components={{
+                                          img: ({node, ...props}) => (
+                                              <img 
+                                                  {...props} 
+                                                  style={{ 
+                                                      width: '100px', 
+                                                      height: '100px',
+                                                      objectFit: 'cover',
+                                                      borderRadius: '4px'
+                                                  }} 
+                                              />
+                                          )
+                                      }}
+                                  >
+                                      {courseData.aboutTeacher}
+                                  </ReactMarkdown>
+                              </div>
+                          ) : (
+                              <span className="text-muted"><CgDanger />محتوای درباره مدرس خالی است!</span>
+                          )}
+                      </div>
+                      
                     </div>
+
+
                     <h6 className='mt-2 mb-4'>نظرات کاربران</h6>
 
                     <div className='reviewsSection'>

@@ -12,10 +12,16 @@ import { deleteData, editData, fetchDataFromApi, postData } from "../../utils/ap
 import { CiEraser } from "react-icons/ci";
 import { IoCloseSharp } from "react-icons/io5";
 
+// adding markdown
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { TbTemplate } from "react-icons/tb";
+import { FaRegEdit } from "react-icons/fa";
+
 const EditProduct = () => {
 
     const context = useContext(MyContext);
-     
+      
     const BootstrapInput = styled(InputBase)(({theme}) => ({
     'label + &': {
         marginTop: theme.spacing(3),
@@ -168,6 +174,10 @@ const EditProduct = () => {
         window.removeEventListener('scroll', handleScroll);
       };
     }, [openEventSelect]);
+
+    // adding markdown
+    const [showPreview, setShowPreview] = useState(false);
+    const [showAuthorPreview, setShowAuthorPreview] = useState(false);
 
 
 
@@ -437,6 +447,11 @@ const EditProduct = () => {
             }
         };
 
+    const downloadGuide = (e) => {
+        e.preventDefault();
+        window.open('/markdownGuide.pdf', '_blank');
+    };
+
 
     return (
         <>
@@ -479,7 +494,50 @@ const EditProduct = () => {
                         <div className="col-12 col-md-9">
                             <div className='form-group'>
                                 <h6>درباره این محصول</h6>
-                                <textarea name="description" onChange={inputChange} value={formFields.description} type='text' cols={2} placeholder=""></textarea>
+                                {!showPreview ? (
+                                    <textarea 
+                                        name="description" 
+                                        onChange={inputChange} 
+                                        value={formFields.description} 
+                                        type='text' 
+                                        cols={2} 
+                                        placeholder=""
+                                        style={{ minHeight: '150px', width: '100%' }}
+                                    />
+                                ) : (
+                                    <div className="txtareaViewer">
+                                        <ReactMarkdown 
+                                            remarkPlugins={[remarkGfm]}
+                                            components={{
+                                                img: ({node, ...props}) => (
+                                                    <img 
+                                                        {...props} 
+                                                        style={{ 
+                                                            width: '100px', 
+                                                            height: '100px',
+                                                            objectFit: 'cover',
+                                                            borderRadius: '4px'
+                                                        }} 
+                                                    />
+                                                )
+                                            }}
+                                        >
+                                            {formFields.description || ''}
+                                        </ReactMarkdown>
+                                    </div>
+                                )}
+                                <div className="flex align-items-center">
+                                    <button 
+                                        className="changeTxtareaView mx-1"
+                                        type="button" 
+                                        onClick={() => setShowPreview(!showPreview)}
+                                    >
+                                    {showPreview ? <span><FaRegEdit />&nbsp;ویرایش محتوا</span> : <span><TbTemplate />&nbsp;پیش نمایش</span>}
+                                    </button>
+                                    <button className="markdownGuide changeTxtareaView mx-1"onClick={downloadGuide}>
+                                        دانلود راهنما   
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -622,38 +680,38 @@ const EditProduct = () => {
                                     className='w-100'
                                     //input={<BootstrapInput />}
                                     sx={{
-                                                                'label + &': {
-                                                                    //marginTop: theme.spacing(3),
-                                                                },
-                                                                '& .MuiInputBase-input': {
-                                                                    borderRadius: 2,
-                                                                    position: 'static',
-                                                                    backgroundColor: context.theme === 'dark' ? '#2b3c5f' : '#fff',
-                                                                    color: context.theme === 'light' ? '#000' : '#ced4da',
-                                                                    fontSize: 16,
-                                                                    padding: '17px 26px 17px 12px',
-                                                                    outline: '0px'
-                                                                },
-                                                                '& .MuiSvgIcon-root': {
-                                                                    color: context.theme === 'light' ? '#000' : '#ced4da'
-                                                                },
-                                                                // Target the outline element that has the blue border
-                                                                '& .MuiOutlinedInput-notchedOutline': {
-                                                                    border: context.theme === 'light' ? '1px solid #ced4da' : '1px solid #2b3c5f',
-                                                                },
-                                                                // Remove blue border on focus
-                                                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                                                    border: context.theme === 'light' ? '1px solid #ced4da' : '1px solid #2b3c5f',
-                                                                    borderWidth: '1px !important',
-                                                                },
-                                                                // Remove blue border on hover
-                                                                '&:hover .MuiOutlinedInput-notchedOutline': {
-                                                                    border: context.theme === 'light' ? '1px solid #ced4da' : '1px solid #2b3c5f',
-                                                                },
-                                                                // Remove any box shadow
-                                                                '&.Mui-focused': {
-                                                                    boxShadow: 'none',
-                                                                },
+                                        'label + &': {
+                                            //marginTop: theme.spacing(3),
+                                        },
+                                        '& .MuiInputBase-input': {
+                                            borderRadius: 2,
+                                            position: 'static',
+                                            backgroundColor: context.theme === 'dark' ? '#2b3c5f' : '#fff',
+                                            color: context.theme === 'light' ? '#000' : '#ced4da',
+                                            fontSize: 16,
+                                            padding: '17px 26px 17px 12px',
+                                            outline: '0px'
+                                        },
+                                        '& .MuiSvgIcon-root': {
+                                            color: context.theme === 'light' ? '#000' : '#ced4da'
+                                        },
+                                        // Target the outline element that has the blue border
+                                        '& .MuiOutlinedInput-notchedOutline': {
+                                            border: context.theme === 'light' ? '1px solid #ced4da' : '1px solid #2b3c5f',
+                                        },
+                                        // Remove blue border on focus
+                                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                            border: context.theme === 'light' ? '1px solid #ced4da' : '1px solid #2b3c5f',
+                                            borderWidth: '1px !important',
+                                        },
+                                        // Remove blue border on hover
+                                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                                            border: context.theme === 'light' ? '1px solid #ced4da' : '1px solid #2b3c5f',
+                                        },
+                                        // Remove any box shadow
+                                        '&.Mui-focused': {
+                                            boxShadow: 'none',
+                                        },
                                     }}
                                     renderValue={(selected) => selected.join(', ')}
                                     open={openEventSelect}
@@ -689,7 +747,44 @@ const EditProduct = () => {
                         <div className="col-12 col-md-9">
                             <div className='form-group'>
                                 <h6>درباره نویسنده</h6>
-                                <textarea name="authorDescription" onChange={inputChange} value={formFields.authorDescription} cols={20}></textarea>
+                                {!showAuthorPreview ? (
+                                    <textarea 
+                                        name="authorDescription" 
+                                        onChange={inputChange} 
+                                        value={formFields.authorDescription} 
+                                        cols={20}
+                                        placeholder=""
+                                        style={{ minHeight: '150px', width: '100%' }}
+                                    />
+                                ) : (
+                                    <div className="txtareaViewer">
+                                        <ReactMarkdown 
+                                            remarkPlugins={[remarkGfm]}
+                                            components={{
+                                                img: ({node, ...props}) => (
+                                                    <img 
+                                                        {...props} 
+                                                        style={{ 
+                                                            width: '100px', 
+                                                            height: '100px',
+                                                            objectFit: 'cover',
+                                                            borderRadius: '4px'
+                                                        }} 
+                                                    />
+                                                )
+                                            }}
+                                        >
+                                            {formFields.authorDescription || ''}
+                                        </ReactMarkdown>
+                                    </div>
+                                )}
+                                <button 
+                                    className="changeTxtareaView mx-1"
+                                    type="button" 
+                                    onClick={() => setShowAuthorPreview(!showAuthorPreview)}
+                                >
+                                {showPreview ? <span><FaRegEdit />&nbsp;ویرایش محتوا</span> : <span><TbTemplate />&nbsp;پیش نمایش</span>}
+                                </button>
                             </div>
                         </div>
                     </div>

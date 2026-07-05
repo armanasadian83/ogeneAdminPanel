@@ -19,6 +19,12 @@ import { BsCalendarDate } from "react-icons/bs";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { IoCloseSharp } from "react-icons/io5";
 
+// adding markdown for textareas:
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { TbTemplate } from "react-icons/tb";
+import { FaRegEdit } from "react-icons/fa";
+
 const AddCourse = () => {
 
     const context = useContext(MyContext);
@@ -190,6 +196,19 @@ const AddCourse = () => {
         
         setValue(formattedValue); 
     };*/
+
+    //adding markdown for textareas
+    const [showPreview, setShowPreview] = useState(false);
+    const [showHeadlinePreview, setShowHeadlinePreview] = useState(false);
+    const [showTeacherPreview, setShowTeacherPreview] = useState(false);
+
+    const convertFarsiToEnglish = (str) => {
+        const map = {
+          '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4',
+          '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9'
+        };
+        return str.replace(/[۰-۹]/g, (match) => map[match]);
+    };
 
 
     //backend:
@@ -518,6 +537,11 @@ const AddCourse = () => {
         }
     };
 
+    const downloadGuide = (e) => {
+        e.preventDefault();
+        window.open('/markdownGuide.pdf', '_blank');
+    };
+
     return (
         <>
         <div className="right-content w-100">
@@ -551,10 +575,53 @@ const AddCourse = () => {
                             </div>
                         </div>
 
-                         <div className="col-12 col-md-9 my-4">
+                        <div className="col-12 col-md-9 my-4">
                             <div className='form-group'>
-                                <h6>درباره این دوره</h6>
-                                <textarea name="description" value={formFields.description} onChange={inputChange} type='text' cols={2} placeholder=""></textarea>
+                              <h6>درباره این دوره</h6>
+                              {!showPreview ? (
+                                <textarea 
+                                  name="description" 
+                                  value={formFields.description} 
+                                  onChange={inputChange} 
+                                  type='text' 
+                                  cols={2} 
+                                  placeholder=""
+                                  style={{ minHeight: '200px', width: '100%' }}
+                                />
+                              ) : (
+                                <div className="txtareaViewer">
+                                  <ReactMarkdown 
+                                    remarkPlugins={[remarkGfm]}
+                                    components={{
+                                      img: ({node, ...props}) => (
+                                        <img 
+                                          {...props} 
+                                          style={{ 
+                                            width: '100px', 
+                                            height: '100px',
+                                            objectFit: 'cover',
+                                            borderRadius: '4px'
+                                          }} 
+                                        />
+                                      )
+                                    }}
+                                  >
+                                    {formFields.description || ''}
+                                  </ReactMarkdown>
+                                </div>
+                                )}
+                                <div className="flex align-items-center">
+                                    <button 
+                                        className="changeTxtareaView mx-1"
+                                        type="button" 
+                                        onClick={() => setShowPreview(!showPreview)}
+                                    >
+                                    {showPreview ? <span><FaRegEdit />&nbsp;ویرایش محتوا</span> : <span><TbTemplate />&nbsp;پیش نمایش</span>}
+                                    </button>
+                                    <button className="markdownGuide changeTxtareaView mx-1"onClick={downloadGuide}>
+                                        دانلود راهنما   
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -669,7 +736,7 @@ const AddCourse = () => {
                             <div className="col-12 col-md-4">
                                 <div className='form-group'>
                                     <h6>قیمت قبلی</h6>
-                                    <input name="oldPrice" value={formFields.oldPrice} onChange={inputChange} type='text'
+                                    {/*<input name="oldPrice" value={formFields.oldPrice} onChange={inputChange} type='text'
                                     onKeyDown={(e) => {
                                         if (
                                             !/[0-9]/.test(e.key) && // not a digit
@@ -682,6 +749,38 @@ const AddCourse = () => {
                                             e.preventDefault();
                                         }
                                     }}
+                                    />*/}
+                                    <input 
+                                        name="oldPrice" 
+                                        value={formFields.oldPrice} 
+                                        onChange={(e) => {
+                                          const convertedValue = convertFarsiToEnglish(e.target.value);
+                                          inputChange({
+                                            target: {
+                                              name: e.target.name,
+                                              value: convertedValue
+                                            }
+                                          });
+                                        }}
+                                        type='text'
+                                        onKeyDown={(e) => {
+                                          // Block Farsi numbers
+                                          if (/[\u06F0-\u06F9]/.test(e.key)) {
+                                            e.preventDefault();
+                                            return;
+                                          }
+
+                                          if (
+                                            !/[0-9]/.test(e.key) &&
+                                            e.key !== "Backspace" &&
+                                            e.key !== "Delete" &&
+                                            e.key !== "ArrowLeft" &&
+                                            e.key !== "ArrowRight" &&
+                                            e.key !== "Tab"
+                                          ) {
+                                            e.preventDefault();
+                                          }
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -689,7 +788,7 @@ const AddCourse = () => {
                             <div className="col-12 col-md-4">
                                 <div className='form-group'>
                                     <h6>قیمت فعلی</h6>
-                                    <input name="price" value={formFields.price} onChange={inputChange} type='text' /*value={value} onChange={handleChange}*/ 
+                                    {/*<input name="price" value={formFields.price} onChange={inputChange} type='text' 
                                     onKeyDown={(e) => {
                                         if (
                                             !/[0-9]/.test(e.key) && // not a digit
@@ -702,6 +801,38 @@ const AddCourse = () => {
                                             e.preventDefault();
                                         }
                                     }}
+                                    />*/}
+                                    <input 
+                                        name="price" 
+                                        value={formFields.price} 
+                                        onChange={(e) => {
+                                          const convertedValue = convertFarsiToEnglish(e.target.value);
+                                          inputChange({
+                                            target: {
+                                              name: e.target.name,
+                                              value: convertedValue
+                                            }
+                                          });
+                                        }}
+                                        type='text'
+                                        onKeyDown={(e) => {
+                                          // Block Farsi numbers
+                                          if (/[\u06F0-\u06F9]/.test(e.key)) {
+                                            e.preventDefault();
+                                            return;
+                                          }
+                                          
+                                          if (
+                                            !/[0-9]/.test(e.key) &&
+                                            e.key !== "Backspace" &&
+                                            e.key !== "Delete" &&
+                                            e.key !== "ArrowLeft" &&
+                                            e.key !== "ArrowRight" &&
+                                            e.key !== "Tab"
+                                          ) {
+                                            e.preventDefault();
+                                          }
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -805,38 +936,38 @@ const AddCourse = () => {
                                         className='w-100'
                                         //input={<BootstrapInput />}
                                         sx={{
-                                                                            'label + &': {
-                                                                                //marginTop: theme.spacing(3),
-                                                                            },
-                                                                            '& .MuiInputBase-input': {
-                                                                                borderRadius: 2,
-                                                                                position: 'static',
-                                                                                backgroundColor: context.theme === 'dark' ? '#2b3c5f' : '#fff',
-                                                                                color: context.theme === 'light' ? '#000' : '#ced4da',
-                                                                                fontSize: 16,
-                                                                                padding: '17px 26px 17px 12px',
-                                                                                outline: '0px'
-                                                                            },
-                                                                            '& .MuiSvgIcon-root': {
-                                                                                color: context.theme === 'light' ? '#000' : '#ced4da'
-                                                                            },
-                                                                            // Target the outline element that has the blue border
-                                                                            '& .MuiOutlinedInput-notchedOutline': {
-                                                                                border: context.theme === 'light' ? '1px solid #ced4da' : '1px solid #2b3c5f',
-                                                                            },
-                                                                            // Remove blue border on focus
-                                                                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                                                                border: context.theme === 'light' ? '1px solid #ced4da' : '1px solid #2b3c5f',
-                                                                                borderWidth: '1px !important',
-                                                                            },
-                                                                            // Remove blue border on hover
-                                                                            '&:hover .MuiOutlinedInput-notchedOutline': {
-                                                                                border: context.theme === 'light' ? '1px solid #ced4da' : '1px solid #2b3c5f',
-                                                                            },
-                                                                            // Remove any box shadow
-                                                                            '&.Mui-focused': {
-                                                                                boxShadow: 'none',
-                                                                            },
+                                            'label + &': {
+                                                //marginTop: theme.spacing(3),
+                                            },
+                                            '& .MuiInputBase-input': {
+                                                borderRadius: 2,
+                                                position: 'static',
+                                                backgroundColor: context.theme === 'dark' ? '#2b3c5f' : '#fff',
+                                                color: context.theme === 'light' ? '#000' : '#ced4da',
+                                                fontSize: 16,
+                                                padding: '17px 26px 17px 12px',
+                                                outline: '0px'
+                                            },
+                                            '& .MuiSvgIcon-root': {
+                                                color: context.theme === 'light' ? '#000' : '#ced4da'
+                                            },
+                                            // Target the outline element that has the blue border
+                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                border: context.theme === 'light' ? '1px solid #ced4da' : '1px solid #2b3c5f',
+                                            },
+                                            // Remove blue border on focus
+                                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                                border: context.theme === 'light' ? '1px solid #ced4da' : '1px solid #2b3c5f',
+                                                borderWidth: '1px !important',
+                                            },
+                                            // Remove blue border on hover
+                                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                                border: context.theme === 'light' ? '1px solid #ced4da' : '1px solid #2b3c5f',
+                                            },
+                                            // Remove any box shadow
+                                            '&.Mui-focused': {
+                                                boxShadow: 'none',
+                                            },
                                         }}
                                         renderValue={(selected) => selected.join(', ')}
                                         open={openEventSelect}
@@ -875,7 +1006,7 @@ const AddCourse = () => {
                 </div>
 
                 <div className='card p-4 mt-4 mb-4 formCard'>
-                    <div className="col-12 col-md-9 my-4">
+                    {/*<div className="col-12 col-md-9 my-4">
                         <div className='form-group'>
                             <h6>سر فصل های این دوره</h6>
                             <textarea name="headline" value={formFields.headline} onChange={inputChange} type='text' cols={2} placeholder="" className="headline"></textarea>
@@ -887,7 +1018,100 @@ const AddCourse = () => {
                             <h6>درباره مدرس</h6>
                             <textarea name="aboutTeacher" value={formFields.aboutTeacher} onChange={inputChange} type='text' cols={2} placeholder=""></textarea>
                         </div>
+                    </div>*/}
+
+                    <div className="col-12 col-md-9 my-4">
+                        <div className='form-group'>
+                            <h6>سر فصل های این دوره</h6>
+                            {!showHeadlinePreview ? (
+                                <textarea 
+                                    name="headline" 
+                                    value={formFields.headline} 
+                                    onChange={inputChange} 
+                                    type='text' 
+                                    cols={2} 
+                                    placeholder=""
+                                    className="headline"
+                                    style={{ minHeight: '150px', width: '100%' }}
+                                />
+                            ) : (
+                                <div className="txtareaViewer">
+                                    <ReactMarkdown 
+                                        remarkPlugins={[remarkGfm]}
+                                        components={{
+                                            img: ({node, ...props}) => (
+                                                <img 
+                                                    {...props} 
+                                                    style={{ 
+                                                        width: '100px', 
+                                                        height: '100px',
+                                                        objectFit: 'cover',
+                                                        borderRadius: '4px'
+                                                    }} 
+                                                />
+                                            )
+                                        }}
+                                    >
+                                        {formFields.headline || ''}
+                                    </ReactMarkdown>
+                                </div>
+                            )}
+                            <button 
+                                className="changeTxtareaView"
+                                type="button" 
+                                onClick={() => setShowHeadlinePreview(!showHeadlinePreview)}
+                            >
+                                {showHeadlinePreview ? <span><FaRegEdit />&nbsp;ویرایش محتوا</span> : <span><TbTemplate />&nbsp;پیش نمایش</span>}
+                            </button>
+                        </div>
                     </div>
+
+                    <div className="col-12 col-md-9 my-4">
+                        <div className='form-group'>
+                            <h6>درباره مدرس</h6>
+                            {!showTeacherPreview ? (
+                                <textarea 
+                                    name="aboutTeacher" 
+                                    value={formFields.aboutTeacher} 
+                                    onChange={inputChange} 
+                                    type='text' 
+                                    cols={2} 
+                                    placeholder=""
+                                    style={{ minHeight: '150px', width: '100%' }}
+                                />
+                            ) : (
+                                <div className="txtareaViewer">
+                                    <ReactMarkdown 
+                                        remarkPlugins={[remarkGfm]}
+                                        components={{
+                                            img: ({node, ...props}) => (
+                                                <img 
+                                                    {...props} 
+                                                    style={{ 
+                                                        width: '100px', 
+                                                        height: '100px',
+                                                        objectFit: 'cover',
+                                                        borderRadius: '4px'
+                                                    }} 
+                                                />
+                                            )
+                                        }}
+                                    >
+                                        {formFields.aboutTeacher || ''}
+                                    </ReactMarkdown>
+                                </div>
+                            )}
+                            <button 
+                                className="changeTxtareaView"
+                                type="button" 
+                                onClick={() => setShowTeacherPreview(!showTeacherPreview)}
+                            >
+                                {showTeacherPreview ? <span><FaRegEdit />&nbsp;ویرایش محتوا</span> : <span><TbTemplate />&nbsp;پیش نمایش</span>}
+                            </button>
+                        </div>
+                    </div>
+
+                    
                 </div>
 
                 <div className='card p-4 mt-0 formCard'>

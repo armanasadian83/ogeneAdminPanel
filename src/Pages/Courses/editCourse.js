@@ -21,6 +21,13 @@ import { RiDeleteBin7Line } from "react-icons/ri";
 import { IoCloseSharp } from "react-icons/io5";
 
 
+// adding markdown
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { TbTemplate } from "react-icons/tb";
+import { FaRegEdit } from "react-icons/fa";
+
+
 const EditCourse = () => {
 
     const context = useContext(MyContext);
@@ -200,6 +207,19 @@ const EditCourse = () => {
         
         setValue(formattedValue); 
     };*/
+
+    // adding markdown
+    const [showPreview, setShowPreview] = useState(false);
+    const [showHeadlinePreview, setShowHeadlinePreview] = useState(false);
+    const [showTeacherPreview, setShowTeacherPreview] = useState(false);
+    const convertFarsiToEnglish = (str) => {
+        const map = {
+          '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4',
+          '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9'
+        };
+        return str.replace(/[۰-۹]/g, (match) => map[match]);
+    };
+
 
 
     //backend
@@ -591,7 +611,7 @@ const EditCourse = () => {
                 msg: "تصویر با موفقیت حذف شد!"
             });
             
-        } catch (error) {
+        } catch (error) { 
             console.log(error);
             context.setAlertBox({
                 open: true,
@@ -599,6 +619,11 @@ const EditCourse = () => {
                 msg: "خطا در حذف تصویر!"
             });
         }
+    };
+
+    const downloadGuide = (e) => {
+        e.preventDefault();
+        window.open('/markdownGuide.pdf', '_blank');
     };
 
 
@@ -635,10 +660,59 @@ const EditCourse = () => {
                             </div>
                         </div>
 
-                         <div className="col-12 col-md-9 my-4">
+                        {/*<div className="col-12 col-md-9 my-4">
                             <div className='form-group'>
                                 <h6>درباره این دوره</h6>
                                 <textarea name="description" value={formFields.description} onChange={inputChange} type='text' cols={2} placeholder=""></textarea>
+                            </div>
+                        </div>*/}
+                        <div className="col-12 col-md-9 my-4">
+                            <div className='form-group'>
+                              <h6>درباره این دوره</h6>
+                              {!showPreview ? (
+                                <textarea 
+                                  name="description" 
+                                  value={formFields.description} 
+                                  onChange={inputChange} 
+                                  type='text' 
+                                  cols={2} 
+                                  placeholder=""
+                                  style={{ minHeight: '200px', width: '100%' }}
+                                />
+                              ) : (
+                                <div className="txtareaViewer">
+                                  <ReactMarkdown 
+                                    remarkPlugins={[remarkGfm]}
+                                    components={{
+                                      img: ({node, ...props}) => (
+                                        <img 
+                                          {...props} 
+                                          style={{ 
+                                            width: '100px', 
+                                            height: '100px',
+                                            objectFit: 'cover',
+                                            borderRadius: '4px'
+                                          }} 
+                                        />
+                                      )
+                                    }}
+                                  >
+                                    {formFields.description}
+                                  </ReactMarkdown>
+                                </div>
+                                )}
+                                <div className="flex align-items-center">
+                                    <button 
+                                        className="changeTxtareaView mx-1"
+                                        type="button" 
+                                        onClick={() => setShowPreview(!showPreview)}
+                                    >
+                                    {showPreview ? <span><FaRegEdit />&nbsp;ویرایش محتوا</span> : <span><TbTemplate />&nbsp;پیش نمایش</span>}
+                                    </button>
+                                    <button className="markdownGuide changeTxtareaView mx-1"onClick={downloadGuide}>
+                                        دانلود راهنما   
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -753,7 +827,7 @@ const EditCourse = () => {
                             <div className="col-12 col-md-4">
                                 <div className='form-group'>
                                     <h6>قیمت قبلی</h6>
-                                    <input name="oldPrice" value={formFields.oldPrice} onChange={inputChange} type='text'
+                                    {/*<input name="oldPrice" value={formFields.oldPrice} onChange={inputChange} type='text'
                                     onKeyDown={(e) => {
                                         if (
                                             !/[0-9]/.test(e.key) && // not a digit
@@ -766,6 +840,36 @@ const EditCourse = () => {
                                             e.preventDefault();
                                         }
                                     }}
+                                    />*/}
+                                    <input 
+                                        name="oldPrice" 
+                                        value={formFields.oldPrice} 
+                                        onChange={(e) => {
+                                          const convertedValue = convertFarsiToEnglish(e.target.value);
+                                          inputChange({
+                                            target: {
+                                              name: e.target.name,
+                                              value: convertedValue
+                                            }
+                                          });
+                                        }}
+                                        type='text'
+                                        onKeyDown={(e) => {
+                                          if (/[\u06F0-\u06F9]/.test(e.key)) {
+                                            e.preventDefault();
+                                            return;
+                                          }
+                                          if (
+                                            !/[0-9]/.test(e.key) &&
+                                            e.key !== "Backspace" &&
+                                            e.key !== "Delete" &&
+                                            e.key !== "ArrowLeft" &&
+                                            e.key !== "ArrowRight" &&
+                                            e.key !== "Tab"
+                                          ) {
+                                            e.preventDefault();
+                                          }
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -773,7 +877,7 @@ const EditCourse = () => {
                             <div className="col-12 col-md-4">
                                 <div className='form-group'>
                                     <h6>قیمت فعلی</h6>
-                                    <input name="price" value={formFields.price} onChange={inputChange} type='text'
+                                    {/*<input name="price" value={formFields.price} onChange={inputChange} type='text'
                                     onKeyDown={(e) => {
                                         if (
                                             !/[0-9]/.test(e.key) && // not a digit
@@ -786,6 +890,36 @@ const EditCourse = () => {
                                             e.preventDefault();
                                         }
                                     }}
+                                    />*/}
+                                    <input 
+                                        name="price" 
+                                        value={formFields.price} 
+                                        onChange={(e) => {
+                                          const convertedValue = convertFarsiToEnglish(e.target.value);
+                                          inputChange({
+                                            target: {
+                                              name: e.target.name,
+                                              value: convertedValue
+                                            }
+                                          });
+                                        }}
+                                        type='text'
+                                        onKeyDown={(e) => {
+                                          if (/[\u06F0-\u06F9]/.test(e.key)) {
+                                            e.preventDefault();
+                                            return;
+                                          }
+                                          if (
+                                            !/[0-9]/.test(e.key) &&
+                                            e.key !== "Backspace" &&
+                                            e.key !== "Delete" &&
+                                            e.key !== "ArrowLeft" &&
+                                            e.key !== "ArrowRight" &&
+                                            e.key !== "Tab"
+                                          ) {
+                                            e.preventDefault();
+                                          }
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -961,7 +1095,7 @@ const EditCourse = () => {
                 </div>
 
                 <div className='card p-4 mt-4 mb-4 formCard'>
-                    <div className="col-12 col-md-9 my-4">
+                    {/*<div className="col-12 col-md-9 my-4">
                         <div className='form-group'>
                             <h6>سر فصل های این دوره</h6>
                             <textarea name="headline" value={formFields.headline} onChange={inputChange} type='text' cols={2} placeholder="" className="headline"></textarea>
@@ -973,7 +1107,99 @@ const EditCourse = () => {
                             <h6>درباره مدرس</h6>
                             <textarea name="aboutTeacher" value={formFields.aboutTeacher} onChange={inputChange} type='text' cols={2} placeholder=""></textarea>
                         </div>
-                    </div>
+                    </div>*/}
+
+
+                    <div className="col-12 col-md-9 my-4">
+                            <div className='form-group'>
+                                <h6>سر فصل های این دوره</h6>
+                                {!showHeadlinePreview ? (
+                                    <textarea 
+                                        name="headline" 
+                                        value={formFields.headline} 
+                                        onChange={inputChange} 
+                                        type='text' 
+                                        cols={2} 
+                                        placeholder=""
+                                        className="headline"
+                                        style={{ minHeight: '150px', width: '100%' }}
+                                    />
+                                ) : (
+                                    <div className="txtareaViewer">
+                                        <ReactMarkdown 
+                                            remarkPlugins={[remarkGfm]}
+                                            components={{
+                                                img: ({node, ...props}) => (
+                                                    <img 
+                                                        {...props} 
+                                                        style={{ 
+                                                            width: '100px', 
+                                                            height: '100px',
+                                                            objectFit: 'cover',
+                                                            borderRadius: '4px'
+                                                        }} 
+                                                    />
+                                                )
+                                            }}
+                                        >
+                                            {formFields.headline || ''}
+                                        </ReactMarkdown>
+                                    </div>
+                                )}
+                                <button 
+                                    className="changeTxtareaView"
+                                    type="button" 
+                                    onClick={() => setShowHeadlinePreview(!showHeadlinePreview)}
+                                >
+                                    {showHeadlinePreview ? <span><FaRegEdit />&nbsp;ویرایش محتوا</span> : <span><TbTemplate />&nbsp;پیش نمایش</span>}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="col-12 col-md-9 my-4">
+                            <div className='form-group'>
+                                <h6>درباره مدرس</h6>
+                                {!showTeacherPreview ? (
+                                    <textarea 
+                                        name="aboutTeacher" 
+                                        value={formFields.aboutTeacher} 
+                                        onChange={inputChange} 
+                                        type='text' 
+                                        cols={2} 
+                                        placeholder=""
+                                        style={{ minHeight: '150px', width: '100%' }}
+                                    />
+                                ) : (
+                                    <div className="txtareaViewer">
+                                        <ReactMarkdown 
+                                            remarkPlugins={[remarkGfm]}
+                                            components={{
+                                                img: ({node, ...props}) => (
+                                                    <img 
+                                                        {...props} 
+                                                        style={{ 
+                                                            width: '100px', 
+                                                            height: '100px',
+                                                            objectFit: 'cover',
+                                                            borderRadius: '4px'
+                                                        }} 
+                                                    />
+                                                )
+                                            }}
+                                        >
+                                            {formFields.aboutTeacher || ''}
+                                        </ReactMarkdown>
+                                    </div>
+                                )}
+                                <button 
+                                    className="changeTxtareaView"
+                                    type="button" 
+                                    onClick={() => setShowTeacherPreview(!showTeacherPreview)}
+                                >
+                                    {showTeacherPreview ? <span><FaRegEdit />&nbsp;ویرایش محتوا</span> : <span><TbTemplate />&nbsp;پیش نمایش</span>}
+                                </button>
+                            </div>
+                        </div>
                 </div>
 
 

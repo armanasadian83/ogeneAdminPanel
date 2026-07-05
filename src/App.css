@@ -440,6 +440,15 @@ body.dark .alertbox .box button{background: #1c3161; color: #d4d2d2;}
 body.dark .alertbox .box button:hover{background: #182a54; color: #d4d2d2;}
 body.dark .alertbox .box span{color: #fff;}
 
+/*adding markdown for textareas: */
+.changeTxtareaView{margin-top: 5px !important; border: none; outline: none; border-radius: 5px; 
+    padding-right: 25px !important; padding-left: 25px !important;}
+body.dark .changeTxtareaView span{color: #000 !important;}
+.txtareaViewer{border: 1px solid #cecbcb; padding: 10px; min-height: 150px; border-radius: 5px;}
+body.dark .txtareaViewer{border: none !important; background: #2b3c5f;}
+.markdownGuide{background: white !important; border: 2px solid #27aa9a;}
+body.dark .markdownGuide{background: #0b1e48 !important; color: white;}
+
 
 
 

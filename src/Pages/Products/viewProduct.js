@@ -26,6 +26,10 @@ import { deleteData, fetchDataFromApi } from "../../utils/api";
 import { CiSquareRemove } from "react-icons/ci";
 import { CgDanger } from "react-icons/cg";
 
+// adding markdown
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+
 const ViewProduct = () => {
 
     const context = useContext(MyContext);
@@ -216,17 +220,59 @@ const ViewProduct = () => {
 
                   <div className='p-4'>
                     <h6 className='mt-2 mb-3'>درباره دوره</h6>
-                    <p style={{whiteSpace: 'pre-line'}}>
-                        {productData?.description}
+                    <p style={{ whiteSpace: 'pre-line' }}>
+                        <ReactMarkdown 
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                                img: ({node, ...props}) => (
+                                    <img 
+                                        {...props} 
+                                        style={{ 
+                                            width: '100%', 
+                                            height: 'auto',
+                                            paddingLeft: '10px',
+                                            paddingRight: '10px'
+                                        }} 
+                                    />
+                                ),
+                                p: ({node, ...props}) => <span {...props} /> // Removes extra paragraph tags inside p
+                            }}
+                        >
+                            {productData?.description || ''}
+                        </ReactMarkdown>
                     </p>
                     <br />
 
                     <hr />
                     <br />
                     <h6 className='mt-2 mb-3'>درباره نویسنده</h6>
-                    <p style={{whiteSpace: 'pre-line'}}>
-                        {productData?.authorDescription !== '' ? productData?.authorDescription : <span className="text-muted"><CgDanger />محتوای درباره نویسنده خالی است!</span>}
-                    </p>
+                    {productData?.authorDescription ? (
+                        <p style={{ whiteSpace: 'pre-line' }}>
+                            <ReactMarkdown 
+                                remarkPlugins={[remarkGfm]}
+                                components={{
+                                    img: ({node, ...props}) => (
+                                        <img 
+                                            {...props} 
+                                            style={{ 
+                                                width: '100%', 
+                                                height: 'auto',
+                                                paddingLeft: '10px',
+                                                paddingRight: '10px'
+                                            }} 
+                                        />
+                                    ),
+                                    p: ({node, ...props}) => <span {...props} /> // Removes extra paragraph tags
+                                }}
+                            >
+                                {productData.authorDescription}
+                            </ReactMarkdown>
+                        </p>
+                    ) : (
+                        <p style={{ whiteSpace: 'pre-line' }}>
+                            <span className="text-muted"><CgDanger />محتوای درباره نویسنده خالی است!</span>
+                        </p>
+                    )}
 
 
                     <br />
