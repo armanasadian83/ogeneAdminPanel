@@ -180,6 +180,14 @@ const AddProduct = () => {
     const [showPreview, setShowPreview] = useState(false);
     const [showAuthorPreview, setShowAuthorPreview] = useState(false);
 
+    const convertFarsiToEnglish = (str) => {
+        const map = {
+          '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4',
+          '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9'
+        };
+        return str.replace(/[۰-۹]/g, (match) => map[match]);
+    };
+
 
     //backend
     const [eventData, setEventdata] = useState([]);
@@ -525,7 +533,7 @@ const AddProduct = () => {
                                         >
                                             {formFields.description || ''}
                                         </ReactMarkdown>
-                                    </div>
+                                    </div> 
                                 )}
                                 <div className="flex align-items-center">
                                     <button 
@@ -606,19 +614,35 @@ const AddProduct = () => {
                         <div className="col-12 col-md-4">
                             <div className='form-group'>
                                 <h6>قیمت قبلی</h6> 
-                                <input name="oldPrice" value={formFields.oldPrice} type='text' onChange={inputChange} 
-                                onKeyDown={(e) => {
-                                    if (
-                                        !/[0-9]/.test(e.key) && // not a digit
+                                <input 
+                                    name="oldPrice" 
+                                    value={formFields.oldPrice} 
+                                    type='text' 
+                                    onChange={(e) => {
+                                      const convertedValue = convertFarsiToEnglish(e.target.value);
+                                      inputChange({
+                                        target: {
+                                          name: e.target.name,
+                                          value: convertedValue
+                                        }
+                                      });
+                                    }}
+                                    onKeyDown={(e) => {
+                                      if (/[\u06F0-\u06F9]/.test(e.key)) {
+                                        e.preventDefault();
+                                        return;
+                                      }
+                                      if (
+                                        !/[0-9]/.test(e.key) &&
                                         e.key !== "Backspace" &&
                                         e.key !== "Delete" &&
                                         e.key !== "ArrowLeft" &&
                                         e.key !== "ArrowRight" &&
                                         e.key !== "Tab"
-                                    ) {
+                                      ) {
                                         e.preventDefault();
-                                    }
-                                }}
+                                      }
+                                    }}
                                 />
                             </div>
                         </div>
@@ -626,19 +650,35 @@ const AddProduct = () => {
                         <div className="col-12 col-md-4">
                             <div className='form-group'>
                                 <h6>قیمت فعلی</h6>
-                                <input name="price" value={formFields.price} type='text' onChange={inputChange} /*value={value} onChange={handleChange}*/
-                                onKeyDown={(e) => {
-                                    if (
-                                        !/[0-9]/.test(e.key) && // not a digit
+                                <input 
+                                    name="price" 
+                                    value={formFields.price} 
+                                    type='text' 
+                                    onChange={(e) => {
+                                      const convertedValue = convertFarsiToEnglish(e.target.value);
+                                      inputChange({
+                                        target: {
+                                          name: e.target.name,
+                                          value: convertedValue
+                                        }
+                                      });
+                                    }}
+                                    onKeyDown={(e) => {
+                                      if (/[\u06F0-\u06F9]/.test(e.key)) {
+                                        e.preventDefault();
+                                        return;
+                                      }
+                                      if (
+                                        !/[0-9]/.test(e.key) &&
                                         e.key !== "Backspace" &&
                                         e.key !== "Delete" &&
                                         e.key !== "ArrowLeft" &&
                                         e.key !== "ArrowRight" &&
                                         e.key !== "Tab"
-                                    ) {
+                                      ) {
                                         e.preventDefault();
-                                    }
-                                }}
+                                      }
+                                    }}
                                 />
                             </div>
                         </div>

@@ -682,7 +682,7 @@ const EditCourse = () => {
                               ) : (
                                 <div className="txtareaViewer">
                                   <ReactMarkdown 
-                                    remarkPlugins={[remarkGfm]}
+                                    remarkPlugins={[remarkGfm]} 
                                     components={{
                                       img: ({node, ...props}) => (
                                         <img 

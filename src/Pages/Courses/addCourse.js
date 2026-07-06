@@ -604,7 +604,7 @@ const AddCourse = () => {
                                           }} 
                                         />
                                       )
-                                    }}
+                                    }} 
                                   >
                                     {formFields.description || ''}
                                   </ReactMarkdown>
