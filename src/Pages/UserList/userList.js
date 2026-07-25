@@ -117,6 +117,22 @@ const UserList = () => {
         })
     }
 
+    const copyClientId = (clientId) => {
+        navigator.clipboard.writeText(clientId).then(() => {
+            context.setAlertBox({
+                open: true,
+                error: false,
+                msg: 'آیدی مشتری کپی شد!'
+            });
+        }).catch(() => {
+            context.setAlertBox({
+                open: true,
+                error: true,
+                msg: 'خطا در کپی کردن آیدی!'
+            });
+        });
+    };
+
     return (
         <>
         <div className="right-content w-100">
@@ -166,6 +182,7 @@ const UserList = () => {
                             <thead className="thead-dark">
                                 <tr>
                                     <th>ردیف</th>
+                                    <th>آیدی</th>
                                     <th style={{width : '300px'}}>اطلاعات کاربر</th>
                                     <th>ایمیل</th>
                                     <th>شماره تماس</th>
@@ -187,6 +204,11 @@ const UserList = () => {
                                                        {index + 1}
                                                    </div>
                                                </td>
+                                               <td>
+                                                    <div className="clientId" style={{ cursor: 'pointer' }} onClick={() => copyClientId(client?.id)}>
+                                                        <small>{client?.id?.substr(0, 8)}...</small>
+                                                        </div>
+                                                    </td>
                                                <td>
                                                    <div className="userBox">
                                                        {client?.name}&nbsp;{client?.lastName}

@@ -25,6 +25,7 @@ const Dashboard = () => {
     const [productData, setProductData] = useState([]);
     const [courseData, setCourseData] = useState([]);
     const [userData, setUserData] = useState([]);
+    const [totalOrders, setTotalOrders] = useState(0);
     
     useEffect(() => {
         fetchDataFromApi('/api/course').then((res) => {
@@ -38,6 +39,10 @@ const Dashboard = () => {
         fetchDataFromApi('/api/client').then((res) => {
             setUserData(res);
         })
+
+        fetchDataFromApi('/api/orders/all').then((res) => {
+            setTotalOrders(res.orders?.length || 0)
+        });
     }, []);
     //
 
@@ -87,7 +92,7 @@ const Dashboard = () => {
                         <div className="col-12 col-md-6">
                             <div className="infoBox" style={{backgroundImage : 'linear-gradient(to right, #c012e2, #eb64fb)'}}>
                                 <h4 className="text-white mb-0">همه سفارشات :</h4>
-                                <span className="text-white">0</span>
+                                <span className="text-white">{totalOrders}</span>
                                 <div className="icon">
                                     <IoMdCart  />
                                 </div>

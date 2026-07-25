@@ -68,3 +68,13 @@ export const deleteData = async (url) => {
         return error;
     }
 }
+
+export const editOrderStatus = async (url, updatedData) => {
+    try {
+        const response = await axios.put(`${process.env.REACT_APP_BASE_URL}${url}`, updatedData);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+}

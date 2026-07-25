@@ -146,4 +146,6 @@
     border-radius: 20px; padding: 25px; text-align: right;}
 
     .changeTxtareaView{padding-right: 15px !important; padding-left: 15px !important;}
+
+    .admin-guide ul li{padding-top: 8px;}
 }

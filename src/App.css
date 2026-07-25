@@ -450,6 +450,92 @@ body.dark .txtareaViewer{border: none !important; background: #2b3c5f;}
 body.dark .markdownGuide{background: #0b1e48 !important; color: white;}
 
 
+/* orderlisting page starts from here*/
+
+.order-details-row .title{font-weight: 700;}
+.order-row.expanded {background-color: #f0fbf7}
+.order-row.expanded td {background-color: #f0fbf7}
+body.dark .order-row.expanded td{background-color: #071739}
+.clientId{background: #26a998; border-radius: 15px; color: #000;}
+.clientId small{font-family: 'Times New Roman', Times, serif !important;}
+.searchSection .form-control{outline: none !important; border: none !important; box-shadow: none !important;}
+body.dark .searchSection .form-control{background: #2b3c5f; color: #eaeaea;}
+.admin-guide .badge{background: #26a998; font-weight: 300;}
+.admin-guide{text-align: justify;}
+body.dark .admin-guide{border: none !important; color: #c3bfbf;}
+
+.order-status-select {
+    border: none;
+    border-radius: 4px;
+    padding: 10px 30px 10px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    min-width: 120px;
+    color: #fff;
+    appearance: none;
+    width: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: left 10px center;
+}
+
+.order-status-select:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Status colors */
+.order-status-select.status-pending {
+    background-color: #ffc107;
+    color: #000;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000000' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+}
+
+.order-status-select.status-processing {
+    background-color: #17a2b8;
+    color: #fff;
+}
+
+.order-status-select.status-completed {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.order-status-select.status-cancelled {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* Option styles */
+.order-status-select option {
+    padding: 5px 10px;
+    padding: 4px 0px;
+    cursor: pointer !important;
+}
+
+.order-status-select option[value="در انتظار"] {
+    background-color: #ffc107;
+    color: #000;
+    cursor: pointer !important;
+}
+
+.order-status-select option[value="در حال پردازش"] {
+    background-color: #17a2b8;
+    color: #fff;
+}
+
+.order-status-select option[value="تایید شده"] {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.order-status-select option[value="لغو شده"] {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+
 
 
 
