@@ -18,6 +18,10 @@ import { FaUserGroup } from "react-icons/fa6";
 import { ImUsers } from 'react-icons/im';
 import { FcCustomerSupport } from 'react-icons/fc';
 import { GrUserAdmin } from "react-icons/gr";
+import { TbReportSearch } from "react-icons/tb";
+import { GrGallery } from "react-icons/gr";
+import { FaBlog } from "react-icons/fa";
+import { BiSupport } from "react-icons/bi";
 
 const Sidebar = () => {
 
@@ -168,31 +172,67 @@ const Sidebar = () => {
                     </Link>
                 </li>
                 <li>
+                    <Link to="/logs" onClick={() => context.closeNav()}>
+                        <Button className={`w-100 ${activeTab === 7 ? 'active' : ''}`} onClick={() => isOpenSubmenu(7)}>
+                            <span className='icon'><TbReportSearch className='ms-2' /></span>
+                            گزارشات
+                            <span className='arrow'><FaAngleLeft /></span>
+                        </Button>
+                    </Link>
+                </li>
+                <li>
                     <Link to="/userList">
-                        <Button className={`w-100 ${activeTab === 7 && isToggleSubmenu === true ? 'active' : ''}`} onClick={() => isOpenSubmenu(7)}>
+                        <Button className={`w-100 ${activeTab === 8 && isToggleSubmenu === true ? 'active' : ''}`} onClick={() => isOpenSubmenu(8)}>
                             <span className='icon'><FaUserGroup className='ms-2' /></span>
                             کاربران
                             <span className='arrow submenuArrow'><FaAngleLeft /></span>
                         </Button>
                     </Link>
-                     <div className={`submenuWrapper ${activeTab === 7 && isToggleSubmenu === true ? 'colapse' : 'colapsed'}`}>
+                     <div className={`submenuWrapper ${activeTab === 8 && isToggleSubmenu === true ? 'colapse' : 'colapsed'}`}>
                         <ul className='submenu'>
                             <li onClick={() => context.closeNav()}><Link to="/userList">لیست کاربران</Link></li>
                             <li onClick={() => context.closeNav()}><Link to="/userList/add">افزودن کاربر</Link></li>
                         </ul>
                     </div>
                 </li>
+                <li>
+                    <Link to="/blogs" onClick={() => context.closeNav()}>
+                        <Button className={`w-100 ${activeTab === 9 ? 'active' : ''}`} onClick={() => isOpenSubmenu(9)}>
+                            <span className='icon'><FaBlog className='ms-2' /></span>
+                            بلاگ ها
+                            <span className='arrow'><FaAngleLeft /></span>
+                        </Button>
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/gallery" onClick={() => context.closeNav()}>
+                        <Button className={`w-100 ${activeTab === 10 ? 'active' : ''}`} onClick={() => isOpenSubmenu(10)}>
+                            <span className='icon'><GrGallery className='ms-2' /></span>
+                            گالری
+                            <span className='arrow'><FaAngleLeft /></span>
+                        </Button>
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/support" onClick={() => context.closeNav()}>
+                        <Button className={`w-100 ${activeTab === 11 ? 'active' : ''}`} onClick={() => isOpenSubmenu(11)}>
+                            <span className='icon'><BiSupport className='ms-2' /></span>
+                            پشتیبانی
+                            <span className='arrow'><FaAngleLeft /></span>
+                        </Button>
+                    </Link>
+                </li>
                 {
                     context.isAdmin === true && 
                     <li>
                         <Link to="/adminList">
-                            <Button className={`w-100 ${activeTab === 8 && isToggleSubmenu === true ? 'active' : ''}`} onClick={() => isOpenSubmenu(8)}>
+                            <Button className={`w-100 ${activeTab === 12 && isToggleSubmenu === true ? 'active' : ''}`} onClick={() => isOpenSubmenu(12)}>
                                 <span className='icon'><GrUserAdmin className='ms-2' /></span>
                                 مدیریت پنل
                                 <span className='arrow submenuArrow'><FaAngleLeft /></span>
                             </Button>
                         </Link>
-                         <div className={`submenuWrapper ${activeTab === 8 && isToggleSubmenu === true ? 'colapse' : 'colapsed'}`}>
+                         <div className={`submenuWrapper ${activeTab === 12 && isToggleSubmenu === true ? 'colapse' : 'colapsed'}`}>
                             <ul className='submenu'>
                                 <li onClick={() => context.closeNav()}><Link to="/adminList">لیست ادمین ها</Link></li>
                                 <li onClick={() => context.closeNav()}><Link to="/adminList/add">افزودن ادمین</Link></li>

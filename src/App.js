@@ -28,6 +28,10 @@ import AdminList from "./Pages/adminList/adminList";
 import AddAdmin from "./Pages/adminList/addAdmin";
 import EditAdmin from "./Pages/adminList/editAdmin";
 import Orders from "./Pages/orders";
+import Gallery from "./Pages/Gallery";
+import Blog from "./Pages/Blogs";
+import Support from "./Pages/Support";
+import Logs from "./Pages/logs";
 
 export const MyContext = createContext();
 
@@ -210,6 +214,11 @@ const App = () => {
                             <Route path="/products/upload" element={<AddProduct />} />
                             <Route path="/products/edit/:id" element={<EditProduct />} />
                             <Route path="/products/:id" element={<ViewProduct />} />
+
+                            <Route path="/gallery" element={<Gallery />} />
+                            <Route path="/blogs" element={<Blog />} />
+                            <Route path="/support" element={<Support />} />
+                            <Route path="/logs" element={<Logs />} />
                         </Routes>
                     </div>
                 </div>

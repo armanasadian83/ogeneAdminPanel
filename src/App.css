@@ -539,38 +539,6 @@ body.dark .admin-guide{border: none !important; color: #c3bfbf;}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .slick-slide{outline: none !important;}
 
 .sliderSml .slick-current .item{border: 1px dashed #112143 !important;}
@@ -656,3 +624,402 @@ body.dark .reviewForm textarea{background: #1b2b4d !important; color: rgba(255, 
 /* useless 
 .reviewForm textarea::-webkit-input-placeholder{color: rgba(255, 255, 255, 0.5);}
 /* useless */
+
+
+
+/* Force Re-verify Button */
+.reverify-btn{background-color: rgba(241, 17, 51, 0.2) !important; color: #c82333 !important; border-radius: 20px !important; 
+    padding: 2px 8px !important; font-size: 13px !important; font-weight: 600 !important; min-width: auto !important; 
+    text-transform: none !important; border: none !important; transition: all 0.2s ease !important; display: flex !important; 
+    align-items: center !important; gap: 4px !important; cursor: pointer !important;}
+body.dark .reverify-btn{background: #c82333 !important; color: #fff !important;}
+.reverify-btn:disabled {opacity: 0.6 !important; cursor: not-allowed !important;}
+.reverify-btn .btnDisabled {opacity: 0.6 !important; cursor: not-allowed !important;}
+
+/* Verify Button - Base */
+.verify-btn {
+    background-color: rgba(26, 159, 83, 0.2) !important;
+    color: forestgreen !important;
+    border-radius: 20px !important;
+    padding: 4px 12px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    min-width: auto !important;
+    text-transform: none !important;
+    border: none !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    cursor: pointer !important;
+}
+
+.verify-btn:disabled {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    background: rgba(114, 158, 133, 0.2) !important;
+    color: rgb(107, 196, 107) !important;
+}
+
+body.dark .verify-btn{background: #28a745 !important; color: #fff !important;}
+body.dark .verify-btn:disabled{background: #4e6a54 !important;}
+
+.searchSection {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 16px 0;
+}
+
+body.dark .searchSection{background: #112143 !important;}
+
+.searchSection .form-group {
+    margin-bottom: 0;
+}
+
+.searchSection .form-label {
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.searchSection .form-control {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    font-size: 14px;
+    height: 40px;
+    background: #f0f0f0;
+}
+
+.searchSection .btn-danger {
+    border-radius: 8px;
+    font-size: 13px;
+    padding: 6px 14px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.searchSection .btn-secondary {
+    border-radius: 8px;
+    font-size: 13px;
+    padding: 6px 16px;
+}
+
+body.dark .searchSection{background: #0a1d45;}
+
+/* ==============================
+   Toolbar Styles (3 Circular Icons)
+   ============================== */
+.toolbar-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 0px;
+}
+
+.toolbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: #EAF3FF;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #333;
+}
+
+.toolbar-btn:hover{color: #0858f7;}
+body.dark .toolbar-btn{background: #1C3161; color: #f1f1f1;}
+body.dark .toolbar-btn:hover{color: #0858f7 !important; background: #1C3161 !important;} 
+
+.toolbar-btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ==============================
+   SMS Modal Styles
+   ============================== */
+.sms-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999; /* Increased from 9999 to 99999 */
+    padding: 20px;
+}
+
+.sms-modal-box {
+    background-color: #fff;
+    padding: 30px 25px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 520px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    animation: smsFadeIn 0.3s ease-out;
+}
+
+body.dark .sms-modal-box{background: #112143 !important;}
+
+@keyframes smsFadeIn {
+    from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.sms-modal-title {
+    margin: 0 0 20px 0;
+    color: #1a1a1a;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sms-modal-textarea {
+    width: 100%;
+    height: 130px;
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    background-color: #fafafa;
+    font-size: 15px;
+    resize: vertical;
+    box-sizing: border-box;
+    font-family: inherit;
+    transition: border-color 0.2s ease;
+    outline: none;
+    resize: none;
+}
+
+body.dark .sms-modal-textarea{background: #18294f; color: #f1f1f1;}
+
+.sms-modal-textarea:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.sms-modal-row {
+    margin: 20px 0 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sms-modal-label {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+    min-width: 100px;
+    white-space: nowrap;
+}
+
+.sms-modal-input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: none;
+    background-color: #fafafa;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+    outline: none;
+}
+
+body.dark .sms-modal-label{color: #f1f1f1;}
+body.dark .sms-modal-input{background: #18294f; color: #f1f1f1;}
+
+.sms-modal-input:focus {
+    outline: none !important;
+    border: none !important;
+}
+
+.sms-modal-footer {
+    display: flex;
+    justify-content: flex-start;
+    gap: 12px;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.sms-btn-primary {
+    padding: 10px 30px;
+    background: linear-gradient(135deg, #4cbeb1, #26a998);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.sms-btn-primary:hover {
+    transform: translateY(-2px);
+}
+
+body.dark .sms-btn-primary{color: #000;}
+
+.sms-btn-secondary {
+    padding: 10px 30px;
+    background-color: #f1f3f5;
+    color: #495057;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.sms-btn-secondary:hover {
+    background-color: #e9ecef;
+    border-color: #ced4da;
+}
+
+body.dark .sms-btn-secondary{background: #12254e; border: none; color: #f1f1f1;}
+
+
+/* ==============================
+   Custom Pill Toggle Switch
+   ============================== */
+.pill-toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 10px 0 15px 0;
+}
+
+.pill-toggle-wrapper {
+    position: relative;
+    display: inline-flex;
+    background-color: #8b5cf6; /* Purple background */
+    border-radius: 9999px;
+    padding: 4px;
+    width: 240px;
+    height: 44px;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+}
+
+.pill-toggle-input {
+    display: none;
+}
+
+.pill-toggle-slider {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 116px; /* Half width minus padding */
+    height: 36px;
+    background-color: #ffffff;
+    border-radius: 9999px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+/* ==============================
+   Custom Pill Toggle Switch (Gray Theme & Reversed Logic)
+   ============================== */
+.pill-toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 15px 0 20px 0;
+    padding: 0 5px; /* Few pixels padding from right and left */
+    box-sizing: border-box;
+}
+
+.pill-toggle-wrapper {
+    position: relative;
+    display: inline-flex;
+    flex-direction: row-reverse; /* Flips the visual order to match checkbox logic */
+    background-color: #7DD3C8; /* Light Gray background */
+    border-radius: 9999px;
+    padding: 4px;
+    width: 100%; /* 100% width of the modal */
+    height: 50px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+body.dark .pill-toggle-wrapper{background: #263c71;}
+
+.pill-toggle-input {
+    display: none;
+}
+
+.pill-toggle-slider {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px); /* Dynamically takes exactly half the space minus padding */
+    height: calc(100% - 8px);
+    background-color: #f4f4f4; /* Darker Gray for active pill */
+    border-radius: 9999px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+body.dark .pill-toggle-slider{background: #071c48;}
+
+/* When Unchecked (All users selected): Slider stays on left */
+.pill-toggle-input:not(:checked) + .pill-toggle-slider {
+    transform: translateX(0);
+}
+
+/* When Checked (Single user selected): Slider moves to right */
+.pill-toggle-input:checked + .pill-toggle-slider {
+    transform: translateX(100%); 
+}
+
+.pill-toggle-labels {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 10px;
+    z-index: 2;
+}
+
+.pill-toggle-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%; /* Each label takes exactly half */
+    font-size: 15px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+    color: #000000; /* All text is black */
+}
+
+.downloadExcelBtn{align-items: center; background: #7DD3C8; border-radius: 5px; border: none; color: #000; padding: 5px 10px;}
+
+
+

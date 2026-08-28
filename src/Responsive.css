@@ -149,3 +149,7 @@
 
     .admin-guide ul li{padding-top: 8px;}
 }
+
+@media screen and (max-width: 768px) {
+    .space-y-mobile{padding: 10px 0px;}
+}

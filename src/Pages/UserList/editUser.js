@@ -46,10 +46,10 @@ const EditUser = () => {
     useEffect(() => {
         fetchDataFromApi(`/api/client/${id}`).then((res) => {
             setFormFields({
-                name: res?.name,
-                lastName: res?.lastName,
-                email: res?.email,
-                phone: res?.phone,
+                name: res?.name || "",
+                lastName: res?.lastName || "",
+                email: res?.email || "",  // Email can be empty
+                phone: res?.phone || "",
                 password: '',
                 confirmPassword: '',
             });
@@ -59,6 +59,7 @@ const EditUser = () => {
     const editClient = (e) => {
         e.preventDefault();
 
+        // Validate Name (REQUIRED)
         if(formFields.name === ""){
             context.setAlertBox({
                 open: true,
@@ -67,63 +68,74 @@ const EditUser = () => {
             });
             return false;
         }
-        if(formFields.email === ""){
+
+        // CHANGED: Email is now OPTIONAL - only validate if provided
+        if(formFields.email && !formFields.email.includes('@')){
             context.setAlertBox({
                 open: true,
                 error: true,
-                msg: "ایمیل را وارد کنید!"
+                msg: "ایمیل معتبر وارد کنید!"
             });
             return false;
         }
+
+        // CHANGED: Phone is REQUIRED
         if(formFields.phone === ""){
             context.setAlertBox({
                 open: true,
                 error: true,
-                msg: "شماره تماس را وارد کنید!"
+                msg: "شماره تلفن را وارد کنید!"
             });
             return false;
         }
+
         if(formFields.phone.length !== 11){
             context.setAlertBox({
                 open: true,
                 error: true,
-                msg: "شماره تماس معتبر وارد کنید!"
-            });
-            return false;
-        }
-        if(formFields.password === ""){
-            context.setAlertBox({
-                open: true,
-                error: true,
-                msg: "رمز عبور را وارد کنید!"
-            });
-            return false;
-        }
-        if(formFields.confirmPassword !== formFields.password){
-            context.setAlertBox({
-                open: true,
-                error: true,
-                msg: "رمز عبور ها باهم تطابق ندارند!"
+                msg: "شماره تلفن معتبر وارد کنید! (مثال: 09123456789)"
             });
             return false;
         }
 
-        if(formFields.password.length < 7){
+        if(!formFields.phone.startsWith('09')){
             context.setAlertBox({
                 open: true,
                 error: true,
-                msg: "رمز عبور حداقل باید 7 حرف/عدد باشد!"
+                msg: "شماره تلفن باید با 09 شروع شود!"
             });
             return false;
         }
 
-        if(formFields.password.includes(" ")){
-            context.setAlertBox({
-                open: true,
-                error: true,
-                msg: "فاصله در رمز عبور مجاز نیست!"
-            });
-            return false;
+        // CHANGED: Password is now OPTIONAL for editing
+        // Only validate if password is provided
+        if(formFields.password && formFields.password.length > 0){
+            if(formFields.confirmPassword !== formFields.password){
+                context.setAlertBox({
+                    open: true,
+                    error: true,
+                    msg: "رمز عبور ها باهم تطابق ندارند!"
+                });
+                return false;
+            }
+
+            if(formFields.password.length < 7){
+                context.setAlertBox({
+                    open: true,
+                    error: true,
+                    msg: "رمز عبور حداقل باید 7 حرف/عدد باشد!"
+                });
+                return false;
+            }
+
+            if(formFields.password.includes(" ")){
+                context.setAlertBox({
+                    open: true,
+                    error: true,
+                    msg: "فاصله در رمز عبور مجاز نیست!"
+                });
+                return false;
+            }
         }
 
         try {
@@ -131,7 +143,14 @@ const EditUser = () => {
             setLoader(true);
             setBtnDisabled(true);
 
-            editData(`/api/client/${id}`, formFields).then((res) => {
+            // CHANGED: Only send password if it's provided
+            const dataToSend = { ...formFields };
+            if (!formFields.password) {
+                delete dataToSend.password;
+                delete dataToSend.confirmPassword;
+            }
+
+            editData(`/api/client/${id}`, dataToSend).then((res) => {
 
                 context.setAlertBox({
                     open: true,
@@ -151,6 +170,8 @@ const EditUser = () => {
 
             }).catch(error => {
                 console.error('Error posting data:', error);
+                setLoader(false);
+                setBtnDisabled(false);
             });
             
         }
@@ -191,7 +212,7 @@ const EditUser = () => {
 
                         <div className="col-12 col-md-6">
                             <div className='form-group'>
-                                <h6>نام کاربر</h6>
+                                <h6>نام کاربر <span className="text-danger">*</span></h6>
                                 <input type='text' name="name" onChange={onChangeInput} value={formFields.name} />
                             </div>
                         </div>
@@ -209,15 +230,16 @@ const EditUser = () => {
 
                             <div className="col-12 col-md-6">
                                 <div className='form-group'>
-                                    <h6>آدرس ایمیل</h6>
-                                    <input type='email' name="email" onChange={onChangeInput} value={formFields.email} />
+                                    <h6>آدرس ایمیل <span className="text-muted">(اختیاری)</span></h6>
+                                    <input type='email' name="email" onChange={onChangeInput} value={formFields.email || ''} placeholder="example@email.com (اختیاری)" />
                                 </div>
                             </div>
 
                             <div className="col-12 col-md-6">
                                 <div className='form-group'>
-                                    <h6>شماره تماس</h6>
-                                    <input type='text' name="phone" onChange={onChangeInput} value={formFields.phone} />
+                                    <h6>شماره تلفن <span className="text-danger">*</span></h6>
+                                    <input type='text' name="phone" onChange={onChangeInput} value={formFields.phone} placeholder="09123456789" maxLength="11" />
+                                    <small className="text-muted">شماره تلفن باید ۱۱ رقم باشد (مثال: 09123456789)</small>
                                 </div>
                             </div>
 
@@ -228,25 +250,29 @@ const EditUser = () => {
                             <div className="col-12 col-md-6">
                                 <div className='form-group'>
                                     <div className="d-flex align-items-center">
-                                        <h6>رمز عبور جدید</h6>
+                                        <h6>رمز عبور جدید <span className="text-muted">(اختیاری)</span></h6>
                                         <span className="toggleShowPassword mx-2 mb-1" onClick={() => setIsShowPassword(!isShowPassword)}>
                                             {isShowPassword === true ? <IoMdEye /> : <IoMdEyeOff />}
                                         </span>
                                     </div>
                                     <input type={isShowPassword === true ? 'text' : 'password'} name="password" onChange={onChangeInput}
+                                        placeholder="برای تغییر رمز عبور وارد کنید"
                                         onKeyDown={(e) => {
                                             if (e.key === " ") e.preventDefault();
                                         }}
                                     />
+                                    <small className="text-muted">در صورت تمایل به تغییر رمز عبور، آن را وارد کنید</small>
                                 </div>
                             </div>
 
                             <div className="col-12 col-md-6">
                                 <div className='form-group'>
                                     <div className="d-flex align-items-center">
-                                        <h6>تکرار رمز عبور جدید</h6> 
+                                        <h6>تکرار رمز عبور جدید <span className="text-muted">(اختیاری)</span></h6> 
                                     </div>
-                                    <input type='password' name="confirmPassword" onChange={onChangeInput} />
+                                    <input type='password' name="confirmPassword" onChange={onChangeInput} 
+                                        placeholder="تکرار رمز عبور جدید"
+                                    />
                                 </div>
                             </div>
                         

@@ -54,20 +54,22 @@ const AddUser = () => {
                 return false;
             }
 
-            if(formFields.email === ""){
+            // CHANGED: Email is now OPTIONAL - only validate if provided
+            if(formFields.email && !formFields.email.includes('@')){
                 context.setAlertBox({
                     open: true,
                     error: true,
-                    msg: "ایمیل را وارد کنید!"
+                    msg: "ایمیل معتبر وارد کنید!"
                 });
                 return false;
             }
 
+            // CHANGED: Phone is REQUIRED
             if(formFields.phone === ""){
                 context.setAlertBox({
                     open: true,
                     error: true,
-                    msg: "شماره تماس را وارد کنید!"
+                    msg: "شماره تلفن را وارد کنید!"
                 });
                 return false;
             }
@@ -76,7 +78,16 @@ const AddUser = () => {
                 context.setAlertBox({
                     open: true,
                     error: true,
-                    msg: "شماره تماس معتبر وارد کنید!"
+                    msg: "شماره تلفن معتبر وارد کنید! (مثال: 09123456789)"
+                });
+                return false;
+            }
+
+            if(!formFields.phone.startsWith('09')){
+                context.setAlertBox({
+                    open: true,
+                    error: true,
+                    msg: "شماره تلفن باید با 09 شروع شود!"
                 });
                 return false;
             }
@@ -154,6 +165,8 @@ const AddUser = () => {
 
             }).catch(error => {
                 console.error('Error posting data:', error);
+                setLoader(false);
+                setBtnDisabled(false);
             });
             
         }
@@ -197,7 +210,7 @@ const AddUser = () => {
 
                         <div className="col-12 col-md-6">
                             <div className='form-group'>
-                                <h6>نام کاربر</h6>
+                                <h6>نام کاربر <span className="text-danger">*</span></h6>
                                 <input type='text' name="name" onChange={onChangeInput} />
                             </div>
                         </div>
@@ -215,15 +228,16 @@ const AddUser = () => {
 
                             <div className="col-12 col-md-6">
                                 <div className='form-group'>
-                                    <h6>آدرس ایمیل</h6>
+                                    <h6>آدرس ایمیل <span className="text-muted">(اختیاری)</span></h6>
                                     <input type='email' name="email" onChange={onChangeInput} />
                                 </div>
                             </div>
 
                             <div className="col-12 col-md-6">
                                 <div className='form-group'>
-                                    <h6>شماره تماس</h6>
-                                    <input type='text' name="phone" onChange={onChangeInput} />
+                                    <h6>شماره تلفن <span className="text-danger">*</span></h6>
+                                    <input type='text' name="phone" onChange={onChangeInput} placeholder="09123456789" maxLength="11" />
+                                    <small className="text-muted">شماره تلفن باید ۱۱ رقم باشد (مثال: 09123456789)</small>
                                 </div>
                             </div>
 
@@ -234,7 +248,7 @@ const AddUser = () => {
                             <div className="col-12 col-md-6">
                                 <div className='form-group'>
                                     <div className="d-flex align-items-center">
-                                        <h6>رمز عبور</h6>
+                                        <h6>رمز عبور <span className="text-danger">*</span></h6>
                                         <span className="toggleShowPassword mx-2 mb-1" onClick={() => setIsShowPassword(!isShowPassword)}>
                                             {isShowPassword === true ? <IoMdEye /> : <IoMdEyeOff />}
                                         </span>
@@ -249,7 +263,7 @@ const AddUser = () => {
                             <div className="col-12 col-md-6">
                                 <div className='form-group'>
                                     <div className="d-flex align-items-center">
-                                        <h6>تکرار رمز عبور</h6> 
+                                        <h6>تکرار رمز عبور <span className="text-danger">*</span></h6> 
                                     </div>
                                     <input type='password' name="confirmPassword" onChange={onChangeInput} />
                                 </div>
