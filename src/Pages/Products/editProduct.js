@@ -413,9 +413,9 @@ const EditProduct = () => {
                 });
 
 
-                deleteData("/api/imageUpload/deleteAllImages");
+                //deleteData("/api/imageUpload/deleteAllImages");
     
-                history('/products');
+                history(`/products/${id}`);
 
                 setUploadedImages([]);
             })

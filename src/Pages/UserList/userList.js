@@ -660,8 +660,8 @@ const UserList = () => {
                                                <td>
                                                     <div className="clientId" style={{ cursor: 'pointer' }} onClick={() => copyClientId(client?.id)}>
                                                         <small>{client?.id?.substr(0, 8)}...</small>
-                                                        </div>
-                                                    </td>
+                                                    </div>
+                                                </td>
                                                <td>
                                                    <div className="userBox">
                                                        {client?.name}&nbsp;{client?.lastName}

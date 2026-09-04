@@ -78,3 +78,166 @@ export const editOrderStatus = async (url, updatedData) => {
         return error;
     }
 }
+
+
+
+
+// Gallery API functions
+export const getGalleryImages = async (filter = 'all') => {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/gallery/images`, {
+            params: { filter }
+        });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return { success: false, error: error.message };
+    }
+};
+
+export const deleteGalleryImage = async (fileKey) => {
+    try {
+        const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/gallery/image/${encodeURIComponent(fileKey)}`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return { success: false, error: error.message };
+    }
+};
+
+export const getGalleryStats = async () => {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/gallery/stats`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return { success: false, error: error.message };
+    }
+};
+
+// Validate course/product ID
+export const validateItemId = async (type, id) => {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/gallery/validate/${type}/${id}`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return { success: false, found: false, message: '0 یافت شد' };
+    }
+};
+
+// Link image to course or product
+export const linkImageToItem = async (imageUrl, type, id) => {
+    try {
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/gallery/link-image`, {
+            imageUrl,
+            type,
+            id
+        });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return { success: false, message: 'خطا در اتصال تصویر' };
+    }
+};
+
+// Unlink image from course or product
+export const unlinkImageFromItem = async (imageUrl, type, id) => {
+    try {
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/gallery/unlink-image`, {
+            imageUrl,
+            type,
+            id
+        });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return { success: false, message: 'خطا در حذف اتصال تصویر' };
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const updateImageMetadata = async (imageKey, imageUrl, data) => {
+    try {
+        console.log('API call - updateImageMetadata:', { imageKey, imageUrl, data });
+        
+        const response = await axios.put(
+            `${process.env.REACT_APP_BASE_URL}/api/gallery/image/${encodeURIComponent(imageKey)}/metadata`,
+            {
+                ...data,
+                imageUrl: imageUrl
+            }
+        );
+        
+        console.log('API response:', response.data);
+        return response.data;
+    } catch (error) {
+        console.log('API error:', error.response?.data || error.message);
+        return { 
+            success: false, 
+            message: error.response?.data?.message || 'خطا در به‌روزرسانی اطلاعات تصویر' 
+        };
+    }
+};
+
+// Get image metadata
+export const getImageMetadata = async (imageKey) => {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/gallery/image/${encodeURIComponent(imageKey)}/metadata`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return { success: false, message: 'خطا در دریافت اطلاعات تصویر' };
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+// Toggle like/unlike image
+export const toggleLikeImage = async (imageKey, imageUrl) => {
+    try {
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/gallery/toggle-like`, {
+            imageKey,
+            imageUrl
+        });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return { success: false, message: 'خطا در تغییر وضعیت لایک' };
+    }
+};
+
+// Get liked images
+export const getLikedImages = async () => {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/gallery/liked`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return { success: false, error: error.message };
+    }
+};

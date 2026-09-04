@@ -211,6 +211,12 @@ const Sidebar = () => {
                             گالری
                             <span className='arrow'><FaAngleLeft /></span>
                         </Button>
+                        <div className={`submenuWrapper ${activeTab === 10 && isToggleSubmenu === true ? 'colapse' : 'colapsed'}`}>
+                            <ul className='submenu'>
+                                <li onClick={() => context.closeNav()}><Link to="/gallery">لیست تصاویر</Link></li>
+                                <li onClick={() => context.closeNav()}><Link to="/gallery/upload">افزودن تصویر</Link></li>
+                            </ul>
+                        </div>
                     </Link>
                 </li>
                 <li>

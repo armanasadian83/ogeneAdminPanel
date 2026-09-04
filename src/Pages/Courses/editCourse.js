@@ -54,30 +54,6 @@ const EditCourse = () => {
         prerequisite: [],
     });
     
-    /*const BootstrapInput = styled(InputBase)(({theme}) => ({ 
-    'label + &': {
-        marginTop: theme.spacing(3),
-    },
-    '& .MuiInputBase-input': {
-        borderRadius: 4,
-        position: 'relative',
-        backgroundColor: context.theme === 'dark' ? '#2b3c5f' : '#fff',
-        color: context.theme === 'light' ? '#000' : '#ced4da',
-        border: context.theme === 'light' ? '1px solid #ced4da' : '',
-        fontSize: 16,
-        padding: '17px 26px 17px 12px',
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-    },
-    '& .MuiSvgIcon-root': {
-        color: context.theme === 'light' ? '#000' : '#ced4da'
-    }
-    }));
-    // MUI
-
-    useEffect(() => {
-        context.setIsHideSideBarAndHeader(false);
-    }, []);*/
-
     // selects :
 
     const [categoryVal, setCategoryVal] = useState('');
@@ -196,17 +172,6 @@ const EditCourse = () => {
     }, [openEventSelect]);
 
     //
-
-    // dividing 3 digits //
-    /*const [value, setValue] = useState('');
-
-    const handleChange = (e) => {
-        const rawValue = e.target.value.replace(/\D/g, '');
-        
-        const formattedValue = rawValue === '' ? '' : Number(rawValue).toLocaleString();
-        
-        setValue(formattedValue); 
-    };*/
 
     // adding markdown
     const [showPreview, setShowPreview] = useState(false);
@@ -424,20 +389,26 @@ const EditCourse = () => {
     const editCourse = (e) => {
         e.preventDefault();
 
-        formdata.append('name', formFields.name);
-        formdata.append('description', formFields.description);
-        formdata.append('field', formFields.field);
-        formdata.append('price', formFields.price);
-        formdata.append('oldPrice', formFields.oldPrice);
-        formdata.append('status', formFields.status);
-        formdata.append('event', formFields.event);
-        formdata.append('startingDate', formFields.startingDate);
-        formdata.append('EndingDate', formFields.EndingDate);
-        formdata.append('rating', formFields.rating);
-        formdata.append('capacity', formFields.capacity);
-        formdata.append('prerequisite', formFields.prerequisite);
+        // ✅ فقط داده‌های مورد نیاز رو آماده کن
+        const courseData = {
+            name: formFields.name,
+            description: formFields.description,
+            headline: formFields.headline,
+            aboutTeacher: formFields.aboutTeacher,
+            images: uploadedImages,  // ✅ از uploadedImages استفاده کن
+            field: formFields.field,
+            price: formFields.price,
+            oldPrice: formFields.oldPrice,
+            startingDate: formFields.startingDate,
+            EndingDate: formFields.EndingDate,
+            status: formFields.status,
+            event: formFields.event,
+            rating: formFields.rating,
+            capacity: formFields.capacity,
+            prerequisite: formFields.prerequisite,
+        };
 
-
+        // Validation
         if(formFields.name === ""){
             context.setAlertBox({
                 open: true,
@@ -510,23 +481,19 @@ const EditCourse = () => {
             return false;
         }
 
-        const courseData = {
-            ...formFields,
-            images: uploadedImages
-        };
-
         setIsLoading(true);
 
-        // submitting form in the database
+        // ✅ ارسال داده به سرور
         editData(`/api/course/${id}`, courseData).then((res) => {
             context.setAlertBox({
                 open: true,
                 error: false,
                 msg: "دوره با موفقیت ویرایش شد!"
-
             });
 
-            setIsLoading(false); 
+            setIsLoading(false);
+            
+            // Reset form
             setFormFields({
                 name : '',
                 description : '',
@@ -542,12 +509,21 @@ const EditCourse = () => {
                 prerequisite: '',
             });
 
-            deleteData("/api/imageUpload/deleteAllImages");
+            // حذف تصاویر موقت از ImageUpload
+            //deleteData("/api/imageUpload/deleteAllImages");
 
-            history('/courses');
+            history(`/courses/${id}`);
 
             setUploadedImages([]);
-        })
+        }).catch((error) => {
+            console.error('Edit error:', error);
+            context.setAlertBox({
+                open: true,
+                error: true,
+                msg: "خطا در ویرایش دوره!"
+            });
+            setIsLoading(false);
+        });
             
     }
 
@@ -564,34 +540,6 @@ const EditCourse = () => {
             msg: "آیدی کپی شد!"
         })
     }
-
-    /*const FcRemoveImage = async (index, imgUrl) => {
-        try {
-            setUploadedImages(prev => prev.filter((url, i) => i !== index));
-
-            /* 3 — Extract public_id from Cloudinary URL
-            const parts = imgUrl.split("/");
-            const file = parts[parts.length - 1]; // "abc123.jpg"
-            const publicId = file.split(".")[0]; // "abc123"
-
-            // 4 — Request backend to delete from Cloudinary
-            await deleteData(`/api/product/delete-image/${publicId}`);
-
-            context.setAlertBox({
-                open: true,
-                error: false,
-                msg: "حذف شد!"
-            });*/ /*
-
-        } catch (error) {
-            console.log(error);
-            context.setAlertBox({
-                open: true,
-                error: true,
-                msg: "خطا در حذف تصویر!"
-            });
-        }
-    };*/
 
     const FcRemoveImage = async (index, imgUrl) => {
         try {
@@ -660,12 +608,6 @@ const EditCourse = () => {
                             </div>
                         </div>
 
-                        {/*<div className="col-12 col-md-9 my-4">
-                            <div className='form-group'>
-                                <h6>درباره این دوره</h6>
-                                <textarea name="description" value={formFields.description} onChange={inputChange} type='text' cols={2} placeholder=""></textarea>
-                            </div>
-                        </div>*/}
                         <div className="col-12 col-md-9 my-4">
                             <div className='form-group'>
                               <h6>درباره این دوره</h6>
@@ -827,20 +769,6 @@ const EditCourse = () => {
                             <div className="col-12 col-md-4">
                                 <div className='form-group'>
                                     <h6>قیمت قبلی</h6>
-                                    {/*<input name="oldPrice" value={formFields.oldPrice} onChange={inputChange} type='text'
-                                    onKeyDown={(e) => {
-                                        if (
-                                            !/[0-9]/.test(e.key) && // not a digit
-                                            e.key !== "Backspace" &&
-                                            e.key !== "Delete" &&
-                                            e.key !== "ArrowLeft" &&
-                                            e.key !== "ArrowRight" &&
-                                            e.key !== "Tab"
-                                        ) {
-                                            e.preventDefault();
-                                        }
-                                    }}
-                                    />*/}
                                     <input 
                                         name="oldPrice" 
                                         value={formFields.oldPrice} 
@@ -877,20 +805,6 @@ const EditCourse = () => {
                             <div className="col-12 col-md-4">
                                 <div className='form-group'>
                                     <h6>قیمت فعلی</h6>
-                                    {/*<input name="price" value={formFields.price} onChange={inputChange} type='text'
-                                    onKeyDown={(e) => {
-                                        if (
-                                            !/[0-9]/.test(e.key) && // not a digit
-                                            e.key !== "Backspace" &&
-                                            e.key !== "Delete" &&
-                                            e.key !== "ArrowLeft" &&
-                                            e.key !== "ArrowRight" &&
-                                            e.key !== "Tab"
-                                        ) {
-                                            e.preventDefault();
-                                        }
-                                    }}
-                                    />*/}
                                     <input 
                                         name="price" 
                                         value={formFields.price} 
@@ -1095,21 +1009,6 @@ const EditCourse = () => {
                 </div>
 
                 <div className='card p-4 mt-4 mb-4 formCard'>
-                    {/*<div className="col-12 col-md-9 my-4">
-                        <div className='form-group'>
-                            <h6>سر فصل های این دوره</h6>
-                            <textarea name="headline" value={formFields.headline} onChange={inputChange} type='text' cols={2} placeholder="" className="headline"></textarea>
-                        </div>
-                    </div>
-                    
-                    <div className="col-12 col-md-9 my-4">
-                        <div className='form-group'>
-                            <h6>درباره مدرس</h6>
-                            <textarea name="aboutTeacher" value={formFields.aboutTeacher} onChange={inputChange} type='text' cols={2} placeholder=""></textarea>
-                        </div>
-                    </div>*/}
-
-
                     <div className="col-12 col-md-9 my-4">
                             <div className='form-group'>
                                 <h6>سر فصل های این دوره</h6>

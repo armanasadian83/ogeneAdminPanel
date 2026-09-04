@@ -153,3 +153,403 @@
 @media screen and (max-width: 768px) {
     .space-y-mobile{padding: 10px 0px;}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----- Tablets (768px - 1024px) ----- */
+@media (max-width: 1024px) {
+    .stats-section .stat-value {
+        font-size: 1.1rem;
+    }
+}
+
+/* ----- Mobile & Small Tablets (576px - 768px) ----- */
+@media (max-width: 768px) {
+    .stats-section {
+        padding: 16px 18px;
+        border-radius: 12px;
+    }
+    
+    .stats-section .stat-value {
+        font-size: 1rem;
+    }
+    
+    .stats-section .stat-label {
+        font-size: 0.65rem;
+    }
+    
+    .gallery-section {
+        padding: 14px;
+        border-radius: 12px;
+    }
+    
+    .gallery-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .gallery-header h5 {
+        font-size: 0.95rem;
+        text-align: center;
+    }
+    
+    .gallery-controls {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .gallery-controls .form-select,
+    .gallery-controls .form-control {
+        width: 100% !important;
+        font-size: 0.8rem;
+        padding: 7px 12px;
+        min-height: 36px;
+    }
+    
+    .gallery-controls .btn-refresh {
+        width: 100%;
+        justify-content: center;
+        padding: 7px 14px;
+        font-size: 0.8rem;
+    }
+    
+    .image-card {
+        border-radius: 12px;
+    }
+    
+    .image-wrapper {
+        aspect-ratio: 4 / 3; 
+    }
+    
+    .image-actions {
+        opacity: 1;
+        transform: none;
+        top: 10px;
+        right: 10px;
+    }
+    
+    .image-actions .btn-action {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+    }
+    
+    .image-actions .btn-action svg {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .badge {
+        font-size: 0.6rem;
+        padding: 3px 8px;
+        top: 6px;
+        left: 6px;
+    }
+    
+    .badge svg {
+        width: 10px;
+        height: 10px;
+    }
+    
+    .image-info {
+        padding: 8px 12px;
+    }
+    
+    .image-info .image-name {
+        font-size: 0.75rem;
+    }
+    
+    .image-info .image-meta {
+        font-size: 0.65rem;
+    }
+    
+    .gallery-empty {
+        padding: 40px 16px;
+    }
+    
+    .gallery-empty svg {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .gallery-footer {
+        flex-direction: column;
+        text-align: center;
+        gap: 6px;
+    }
+    
+    .gallery-footer .result-count {
+        font-size: 0.75rem;
+    }
+    
+    .gallery-loading {
+        padding: 40px 16px;
+    }
+    
+    .gallery-loading .spinner-border {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .gallery-loading p {
+        font-size: 0.85rem;
+    }
+}
+
+/* ----- Very Small Mobile (up to 576px) ----- */
+@media (max-width: 576px) {
+    .stats-section {
+        padding: 12px 14px;
+        border-radius: 10px;
+        margin-bottom: 16px;
+    }
+    
+    .stats-section .stat-value {
+        font-size: 0.9rem;
+    }
+    
+    .stats-section .stat-label {
+        font-size: 0.6rem;
+    }
+    
+    .gallery-section {
+        padding: 10px;
+        border-radius: 10px;
+    }
+    
+    .gallery-header h5 {
+        font-size: 0.85rem;
+    }
+    
+    .gallery-controls .form-select,
+    .gallery-controls .form-control {
+        font-size: 0.75rem;
+        padding: 6px 10px;
+        min-height: 32px;
+        border-radius: 8px;
+    }
+    
+    .gallery-controls .btn-refresh {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+        border-radius: 8px;
+        min-height: 32px;
+    }
+    
+    .image-card {
+        border-radius: 10px;
+        margin-bottom: 4px;
+    }
+    
+    .image-wrapper {
+        aspect-ratio: 1 / 1;
+    }
+    
+    .image-actions .btn-action {
+        width: 26px;
+        height: 26px;
+        font-size: 0.65rem;
+    }
+    
+    .image-actions .btn-action svg {
+        width: 12px;
+        height: 12px;
+    }
+
+    .btn-like{
+        width: 26px;
+        height: 26px;
+    }
+    
+    .badge {
+        font-size: 0.55rem;
+        padding: 2px 6px;
+        top: 4px;
+        left: 4px;
+    }
+    
+    .badge svg {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .image-info {
+        padding: 6px 10px;
+    }
+    
+    .image-info .image-name {
+        font-size: 0.7rem;
+    }
+    
+    .image-info .image-meta {
+        font-size: 0.6rem;
+    }
+    
+    .image-info .image-meta span {
+        padding: 1px 6px;
+    }
+    
+    .gallery-empty {
+        padding: 30px 12px;
+    }
+    
+    .gallery-empty svg {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .gallery-empty h5 {
+        font-size: 0.9rem;
+    }
+    
+    .gallery-empty p {
+        font-size: 0.8rem;
+    }
+    
+    .gallery-footer {
+        font-size: 0.7rem;
+    }
+    
+    .gallery-footer .result-count {
+        font-size: 0.7rem;
+    }
+    
+    .gallery-loading {
+        padding: 30px 12px;
+    }
+    
+    .gallery-loading .spinner-border {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .gallery-loading p {
+        font-size: 0.8rem;
+    }
+    
+    .gallery-error {
+        font-size: 0.8rem;
+        padding: 10px 14px;
+        border-radius: 8px;
+    }
+}
+
+/* ----- Landscape Mobile Phones ----- */
+@media (max-height: 600px) and (orientation: landscape) {
+    .stats-section {
+        padding: 10px 14px;
+    }
+    
+    .stats-section .stat-value {
+        font-size: 0.9rem;
+    }
+    
+    .image-wrapper {
+        aspect-ratio: 16 / 10;
+    }
+    
+    .gallery-section {
+        padding: 10px;
+    }
+    
+    .gallery-empty {
+        padding: 20px 12px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Responsive */
+@media (max-width: 576px) {
+    .image-modal-id-wrapper {
+        flex-direction: row;
+    }
+    
+    .image-modal-validate-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 0.8rem;
+    }
+    
+    .validation-result {
+        font-size: 0.75rem;
+    }
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .image-modal-checkbox-text {
+        font-size: 0.8rem;
+    }
+    
+    .image-modal-checkbox {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .image-modal-warning {
+        font-size: 0.7rem;
+        padding: 6px 10px;
+    }
+}

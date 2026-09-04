@@ -491,7 +491,7 @@ const AddCourse = () => {
                 setIsLoading(false);
             }, 500);
 
-            deleteData("/api/imageUpload/deleteAllImages");
+            //deleteData("/api/imageUpload/deleteAllImages");
 
             history('/courses');
 
@@ -1116,7 +1116,7 @@ const AddCourse = () => {
 
                 <div className='card p-4 mt-0 formCard'>
                     <div className='imagesUploadSec'>
-                        <h5 className='mb-4'>آپلود تصویر</h5>
+                        <h5 className='mb-4'>آپلود تصویر</h5> 
                         <div className='imgUploadBox d-flex align-items-center'>
                             
                             {uploadedImages?.length !== 0 &&

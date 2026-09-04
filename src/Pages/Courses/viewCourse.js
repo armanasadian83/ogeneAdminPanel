@@ -38,6 +38,7 @@ const ViewCourse = () => {
   
     useEffect(() => {
         context.setIsHideSideBarAndHeader(false);
+        context.setBlurSideNavBar(false);
     }, []);
 
     //backend

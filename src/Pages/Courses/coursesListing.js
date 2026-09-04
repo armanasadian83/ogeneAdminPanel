@@ -54,6 +54,22 @@ const Courses = () => {
         })
     }
 
+    const copyCourseId = (courseId) => {
+        navigator.clipboard.writeText(courseId).then(() => {
+            context.setAlertBox({
+                open: true,
+                error: false,
+                msg: 'آیدی دوره کپی شد!'
+            });
+        }).catch(() => {
+            context.setAlertBox({
+                open: true,
+                error: true,
+                msg: 'خطا در کپی کردن آیدی!'
+            });
+        });
+    };
+
     return (
         <>
         
@@ -104,6 +120,7 @@ const Courses = () => {
                             <thead className="thead-dark">
                                 <tr>
                                     <th>ردیف</th>
+                                    <th>شناسه</th>
                                     <th style={{width : '300px'}}>دوره</th>
                                     <th>حوزه</th>
                                     <th>تاریخ شروع</th>
@@ -128,6 +145,11 @@ const Courses = () => {
                                                 <td>
                                                     <div className="d-flex align-items-center mr-2">
                                                         {index + 1}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="clientId" style={{ cursor: 'pointer' }} onClick={() => copyCourseId(item?.id)}>
+                                                        <small>{item?.id?.substr(0, 8)}...</small>
                                                     </div>
                                                 </td>
                                                 <td>

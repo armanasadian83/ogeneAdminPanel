@@ -389,7 +389,7 @@ const AddProduct = () => {
                 setIsLoading(false);
             }, 500);
 
-            deleteData("/api/imageUpload/deleteAllImages");
+            //deleteData("/api/imageUpload/deleteAllImages");
 
             history('/products');
 

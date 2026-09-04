@@ -52,6 +52,22 @@ const Products = () => {
         })
     }
 
+    const copyProductId = (productId) => {
+        navigator.clipboard.writeText(productId).then(() => {
+            context.setAlertBox({
+                open: true,
+                error: false,
+                msg: 'آیدی محصول کپی شد!'
+            });
+        }).catch(() => {
+            context.setAlertBox({
+                open: true,
+                error: true,
+                msg: 'خطا در کپی کردن آیدی!'
+            });
+        });
+    };
+
     return (
         <>
         <div className="right-content w-100">
@@ -99,6 +115,7 @@ const Products = () => {
                             <thead className="thead-dark">
                                 <tr>
                                     <th>ردیف</th>
+                                    <th>شناسه</th>
                                     <th style={{width : '300px'}}>نام محصول</th>
                                     <th>حوزه</th>
                                     <th>نویسنده</th>
@@ -120,6 +137,11 @@ const Products = () => {
                                             <td>
                                                 <div className="d-flex align-items-center mr-2">
                                                     {index + 1}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="clientId" style={{ cursor: 'pointer' }} onClick={() => copyProductId(item?.id)}>
+                                                    <small>{item?.id?.substr(0, 8)}...</small>
                                                 </div>
                                             </td>
                                             <td>

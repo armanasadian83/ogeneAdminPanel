@@ -32,6 +32,7 @@ import Gallery from "./Pages/Gallery";
 import Blog from "./Pages/Blogs";
 import Support from "./Pages/Support";
 import Logs from "./Pages/logs";
+import UploadImage from "./Pages/Gallery/uploadImage";
 
 export const MyContext = createContext();
 
@@ -216,6 +217,7 @@ const App = () => {
                             <Route path="/products/:id" element={<ViewProduct />} />
 
                             <Route path="/gallery" element={<Gallery />} />
+                            <Route path="/gallery/upload" element={<UploadImage />} />
                             <Route path="/blogs" element={<Blog />} />
                             <Route path="/support" element={<Support />} />
                             <Route path="/logs" element={<Logs />} />
